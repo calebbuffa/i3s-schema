@@ -1,0 +1,16 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "vertexAttributes",
+  "description": "The vertex buffer description.",
+  "type": "object",
+  "properties": {
+    "position": {
+      "$ref": "value.schema.json",
+      "description": "Only LEPCC compressed (X,Y,Z) is supported. Decompressed data will be absolute `Float64` position."
+    }
+  },
+  "x-i3s-versions": [
+    "2.1",
+    "2.0"
+  ]
+}

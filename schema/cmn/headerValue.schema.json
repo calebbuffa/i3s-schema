@@ -1,0 +1,42 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "headerValue",
+  "description": "Value for attributeByteCount, attributeValues and objectIds.",
+  "type": "object",
+  "properties": {
+    "valueType": {
+      "type": "string",
+      "enum": [
+        "Int8",
+        "UInt8",
+        "Int16",
+        "UInt16",
+        "Int32",
+        "UInt32",
+        "Float32",
+        "Float64",
+        "String"
+      ],
+      "description": "Defines the value type. Possible values are: `Int8`UInt8`Int16`UInt16`Int32`UInt32`Float32`Float64`String`"
+    },
+    "property": {
+      "type": "string",
+      "enum": [
+        "count",
+        "attributeValuesByteCount"
+      ],
+      "description": "Encoding method for the value. Possible values are: `count`: Should always be present and indicates the count of features in the attribute storage. `attributeValuesByteCount`"
+    }
+  },
+  "required": [
+    "valueType",
+    "property"
+  ],
+  "x-i3s-versions": [
+    "1.10",
+    "1.9",
+    "1.8",
+    "1.7",
+    "1.6"
+  ]
+}

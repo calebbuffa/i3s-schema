@@ -1,0 +1,59 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "attributeStorageInfo",
+  "description": "The attributeStorageInfo object describes the structure of the binary attribute data resource of a layer, which is the same for every node in the layer. The following examples show how different attribute types are represented as a binary buffer. # Examples of attribute resources",
+  "type": "object",
+  "properties": {
+    "key": {
+      "type": "string",
+      "description": "The unique field identifier key."
+    },
+    "name": {
+      "type": "string",
+      "description": "The name of the field."
+    },
+    "header": {
+      "type": "array",
+      "items": {
+        "$ref": "headerValue.schema.json"
+      },
+      "description": "Declares the headers of the binary attribute data."
+    },
+    "ordering": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "enum": [
+          "attributeByteCounts",
+          "attributeValues",
+          "ObjectIds"
+        ]
+      },
+      "description": "Possible values for each array string: `attributeByteCounts`: Should only be present when working with string data types. `attributeValues`: Should always be present. `ObjectIds`"
+    },
+    "attributeValues": {
+      "$ref": "value.schema.json",
+      "description": "Represents the description for value encoding. For example: scalar or vector encoding."
+    },
+    "attributeByteCounts": {
+      "$ref": "value.schema.json",
+      "description": "For string types only. Represents the byte count of the string, including the null character."
+    },
+    "objectIds": {
+      "$ref": "value.schema.json",
+      "description": "Stores the object-id values of each feature within the node."
+    }
+  },
+  "required": [
+    "key",
+    "name",
+    "header"
+  ],
+  "x-i3s-versions": [
+    "1.10",
+    "1.9",
+    "1.8",
+    "1.7",
+    "1.6"
+  ]
+}

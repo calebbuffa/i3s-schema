@@ -1,0 +1,14 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "SLPK Hash Table",
+  "description": "Scanning an SLPK (ZIP store) containing millions of documents is usually inefficient and slow. A hash table file may be added to the SLPK to improve first load and file scanning performances. A hash table is a data structure that implements an associative array abstract data type, a structure that can map keys to values. A hash table uses a hash function to compute an index, also called a hash code, into an array of buckets or slots, from which the desired value can be found (Wikipedia).",
+  "type": "object",
+  "properties": {},
+  "x-i3s-versions": [
+    "2.1",
+    "1.10",
+    "1.9",
+    "1.8",
+    "1.7"
+  ]
+}

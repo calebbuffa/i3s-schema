@@ -1,0 +1,32 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "filterBlock",
+  "description": "A filter block defines what elements will be filtered with a specific filter mode. To ensure performance on client applications, it is not recommended to declare multiple filter blocks with the same filter mode. Filter blocks are contained in a filter for a building scene layer. Each filter includes at least one filter block.",
+  "type": "object",
+  "properties": {
+    "title": {
+      "type": "string",
+      "description": "Title of the filter block."
+    },
+    "filterMode": {
+      "$ref": "filterMode.schema.json",
+      "description": "Filter mode defines how features are drawn. For example, the filter mode of a filter can be solid or wire frame."
+    },
+    "filterExpression": {
+      "type": "string",
+      "description": "Filter query expression for a building scene layer."
+    }
+  },
+  "required": [
+    "title",
+    "filterMode",
+    "filterExpression"
+  ],
+  "x-i3s-versions": [
+    "1.10",
+    "1.9",
+    "1.8",
+    "1.7",
+    "1.6"
+  ]
+}

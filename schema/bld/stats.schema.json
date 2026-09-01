@@ -1,0 +1,25 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "statistics",
+  "description": "Statistics for all building scene layer sublayers. Captures statistical information for each field in the building scene layer and the sublayers containing this fields.",
+  "type": "object",
+  "properties": {
+    "summary": {
+      "type": "array",
+      "items": {
+        "$ref": "attributestats.schema.json"
+      },
+      "description": "Per-attribute statistics for all sublayers."
+    }
+  },
+  "required": [
+    "summary"
+  ],
+  "x-i3s-versions": [
+    "1.10",
+    "1.9",
+    "1.8",
+    "1.7",
+    "1.6"
+  ]
+}

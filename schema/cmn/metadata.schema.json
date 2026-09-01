@@ -1,0 +1,17 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "metadata",
+  "description": "The metadata.json contains information regarding the creation and storing of i3s in SLPK to support clients with i3s service creation and processing of the data.",
+  "type": "object",
+  "properties": {
+    "nodeCount": {
+      "type": "number",
+      "description": "Total number of nodes in the SLPK."
+    }
+  },
+  "x-i3s-versions": [
+    "2.1",
+    "1.10",
+    "1.9"
+  ]
+}

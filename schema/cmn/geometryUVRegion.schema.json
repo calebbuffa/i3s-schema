@@ -1,0 +1,44 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "geometryUVRegion",
+  "description": "UV region for repeated textures. UV regions are required to properly wrap UV coordinates of repeated-texture in texture atlases. The texture must be written in the atlas with extra border texels to reduce texture sampling artifacts. UV regions are defined as a four-component array per vertex : [u_min, v_min, u_max, v_max ], where each component is in the range [0,1] encoded using `normalized UInt16`. UV could be \"wrapped\" in the shader like the following: ` hlsl // UV for this texel is uv in [0, n] uv = frac(uv) * (region.zw - region.xy) + region.xy; `",
+  "type": "object",
+  "properties": {
+    "type": {
+      "type": "string",
+      "enum": [
+        "UInt16"
+      ],
+      "description": "Color channel values. Must be: `UInt16`"
+    },
+    "component": {
+      "type": "integer",
+      "description": "The `default =4`, must be 4."
+    },
+    "encoding": {
+      "type": "string",
+      "enum": [
+        "normalized"
+      ],
+      "description": "EncodingMust be: `normalized`"
+    },
+    "binding": {
+      "type": "string",
+      "enum": [
+        "per-vertex",
+        "per-uvregion"
+      ],
+      "description": "bindingPossible values are: `per-vertex`: default`per-uvregion`: Only valid in conjonction with [`compressedAttributes`](compressedAttributes.cmn.md) when `uvRegionIndex` attribute is present."
+    }
+  },
+  "required": [
+    "type",
+    "component"
+  ],
+  "x-i3s-versions": [
+    "1.10",
+    "1.9",
+    "1.8",
+    "1.7"
+  ]
+}

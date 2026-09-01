@@ -1,0 +1,50 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "geometryBuffer",
+  "description": "Mesh Geometry Description **Important**: The order of the vertex attributes in the buffer is **fixed** to simplify binary parsing: ` position normal uv0 uv1 color uvRegion featureId faceRange ` or ` compressedAttributes ` **Important:** - Attribute that are present are stored continuously in the corresponding geometry buffers. - All vertex attributes ( **except** `compressedAttributes`) have a fixed size that may be computed as: `#component * sizeof( type ) * {# of vertices or #features}` where `#component` is the number of components such as `position`,`normal`, etc. Furthermore, `type` is the datatype of the variable used and `sizeof` returns the size of the datatype in bytes.",
+  "type": "object",
+  "properties": {
+    "offset": {
+      "type": "integer",
+      "description": "The number of bytes to skip from the beginning of the binary buffer. Useful to describe 'legacy' buffer that have a header. Default=`0`."
+    },
+    "position": {
+      "$ref": "geometryPosition.schema.json",
+      "description": "Vertex positions relative to oriented-bounding-box center."
+    },
+    "normal": {
+      "$ref": "geometryNormal.schema.json",
+      "description": "Face/vertex normal."
+    },
+    "uv0": {
+      "$ref": "geometryUV.schema.json",
+      "description": "First set of UV coordinates. Only applies to textured mesh."
+    },
+    "color": {
+      "$ref": "geometryColor.schema.json",
+      "description": "The colors attribute."
+    },
+    "uvRegion": {
+      "$ref": "geometryUVRegion.schema.json",
+      "description": "UV regions, used for repeated textures in texture atlases."
+    },
+    "featureId": {
+      "$ref": "geometryFeatureID.schema.json",
+      "description": "FeatureId attribute."
+    },
+    "faceRange": {
+      "$ref": "geometryFaceRange.schema.json",
+      "description": "Face range for a feature."
+    },
+    "compressedAttributes": {
+      "$ref": "compressedAttributes.schema.json",
+      "description": "Compressed attributes. **Cannot** be combined with any other attributes."
+    }
+  },
+  "x-i3s-versions": [
+    "1.10",
+    "1.9",
+    "1.8",
+    "1.7"
+  ]
+}

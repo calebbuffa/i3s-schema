@@ -1,0 +1,37 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "value",
+  "description": "Value for attributeByteCount, attributeValues and objectIds.",
+  "type": "object",
+  "properties": {
+    "valueType": {
+      "type": "string",
+      "description": "Defines the value type."
+    },
+    "encoding": {
+      "type": "string",
+      "description": "Encoding method for the value."
+    },
+    "timeEncoding": {
+      "type": "string",
+      "enum": [
+        "ECMA_ISO8601"
+      ],
+      "description": "Encoding method for the time value. DateTime attribute string formatting must comply with [ECMA-ISO 8601](ECMA_ISO8601.md). Must be: `ECMA_ISO8601`"
+    },
+    "valuesPerElement": {
+      "type": "number",
+      "description": "Number of values per element."
+    }
+  },
+  "required": [
+    "valueType"
+  ],
+  "x-i3s-versions": [
+    "1.10",
+    "1.9",
+    "1.8",
+    "1.7",
+    "1.6"
+  ]
+}

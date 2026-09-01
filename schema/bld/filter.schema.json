@@ -1,0 +1,52 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "filter",
+  "description": "The filter object can be applied to a building scene layer. Filter allows client applications to reduce the drawn elements of a building to specific types and values.",
+  "type": "object",
+  "properties": {
+    "id": {
+      "type": "string",
+      "description": "Global ID as unique identifier of the filter."
+    },
+    "name": {
+      "type": "string",
+      "description": "Name of the filter."
+    },
+    "description": {
+      "type": "string",
+      "description": "Description of the filter."
+    },
+    "isDefaultFilter": {
+      "type": "boolean",
+      "description": "Indicates if a filter is the default filter. Clients use the default filter to show the current state of a building. For example, if 'created' is the default filter, all elements in the 'created' phases are drawn, while elements in the 'demolished' phases are invisible. The default filter is not shown in the UI and does not have Authoring Info. (Can build specific UI for this filter)"
+    },
+    "isVisible": {
+      "type": "boolean",
+      "description": "Defines if a filter is visible within the client application. Used to exclude filters that are overwritten from a group of filters shown in the client application."
+    },
+    "filterBlocks": {
+      "type": "array",
+      "items": {
+        "$ref": "filterBlock.schema.json"
+      },
+      "description": "Array of filter blocks defining the filter. A filter contains at least one filter block."
+    },
+    "filterAuthoringInfo": {
+      "$ref": "filterAuthoringInfo.schema.json",
+      "description": "Authoring Info used to generate user interface for authoring clients."
+    }
+  },
+  "required": [
+    "id",
+    "name",
+    "description",
+    "filterBlocks"
+  ],
+  "x-i3s-versions": [
+    "1.10",
+    "1.9",
+    "1.8",
+    "1.7",
+    "1.6"
+  ]
+}

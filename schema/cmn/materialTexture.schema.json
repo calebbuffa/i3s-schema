@@ -1,0 +1,30 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "materialTexture",
+  "description": "The material texture definition.",
+  "type": "object",
+  "properties": {
+    "textureSetDefinitionId": {
+      "type": "integer",
+      "description": "The index in [layer.textureSetDefinitions](3DSceneLayer.cmn.md)."
+    },
+    "texCoord": {
+      "type": "integer",
+      "description": "The set index of texture's TEXCOORD attribute used for texture coordinate mapping. Default is 0. Deprecated.",
+      "deprecated": true
+    },
+    "factor": {
+      "type": "number",
+      "description": "The _normal texture_: scalar multiplier applied to each normal vector of the normal texture. For _occlusion texture_,scalar multiplier controlling the amount of occlusion applied. Default=`1`"
+    }
+  },
+  "required": [
+    "textureSetDefinitionId"
+  ],
+  "x-i3s-versions": [
+    "1.10",
+    "1.9",
+    "1.8",
+    "1.7"
+  ]
+}

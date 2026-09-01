@@ -1,0 +1,24 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Node page",
+  "description": "The node page object representing the tree as a flat array of nodes where internal nodes reference their children by their array indices.",
+  "type": "object",
+  "properties": {
+    "nodes": {
+      "type": "array",
+      "items": {
+        "$ref": "node.schema.json"
+      },
+      "description": "Array of nodes."
+    }
+  },
+  "required": [
+    "nodes"
+  ],
+  "x-i3s-versions": [
+    "1.10",
+    "1.9",
+    "1.8",
+    "1.7"
+  ]
+}

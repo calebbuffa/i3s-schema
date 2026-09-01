@@ -1,0 +1,45 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "node",
+  "description": "The node object.",
+  "type": "object",
+  "properties": {
+    "index": {
+      "type": "integer",
+      "description": "The index in the node array. May be **different than** material, geometry and attribute `resource` id. See [`mesh`](mesh.cmn.md) for more information."
+    },
+    "parentIndex": {
+      "type": "integer",
+      "description": "The index of the parent node in the node array."
+    },
+    "lodThreshold": {
+      "type": "number",
+      "description": "When to switch LoD. See [`nodepages[i].lodSelectionMetricType`](nodePageDefinition.cmn.md) for more information."
+    },
+    "obb": {
+      "$ref": "obb.schema.json",
+      "description": "Oriented bounding box for this node."
+    },
+    "children": {
+      "type": "array",
+      "items": {
+        "type": "integer"
+      },
+      "description": "index of the children nodes indices."
+    },
+    "mesh": {
+      "$ref": "mesh.schema.json",
+      "description": "The mesh for this node. **WARNING:** only **SINGLE** mesh is supported at version 1.7 (i.e. `length` **must** be 0 or 1)."
+    }
+  },
+  "required": [
+    "index",
+    "obb"
+  ],
+  "x-i3s-versions": [
+    "1.10",
+    "1.9",
+    "1.8",
+    "1.7"
+  ]
+}

@@ -1,0 +1,72 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "sublayer",
+  "description": "Sublayer of a building scene layer. A building scene layer is composed of an overview and the full model containing the discipline and category layers. These layer types are represented as sublayers. A sublayer may contain other layers or sublayers (i.e. `group`) to form a nested structure. The order of the layers is inverted, meaning the first layer is on the bottom and the last layer is on the top.",
+  "type": "object",
+  "properties": {
+    "id": {
+      "type": "integer",
+      "description": "Identifier for this sublayer. **If** `layerType != 'group'`, resources will be at `/layers/{bim_layer_id}/sublayers/{this.id}/...`"
+    },
+    "name": {
+      "type": "string",
+      "description": "Layer name. **Must be unique** per building scene layer."
+    },
+    "alias": {
+      "type": "string",
+      "description": "Alias of the layer name. Can be empty if alias and name are identical."
+    },
+    "discipline": {
+      "type": "string",
+      "enum": [
+        "Mechanical",
+        "Architectural",
+        "Piping",
+        "Electrical",
+        "Structural",
+        "Infrastructure"
+      ],
+      "description": "Semantics for work discipline groups which can be used to refine the user experience. Possible values are: `Mechanical`Architectural`Piping`Electrical`Structural`Infrastructure`"
+    },
+    "modelName": {
+      "type": "string",
+      "description": "A fixed string of sublayer information. Used by client applications to define specific behavior for the modelName. See [list of defined modelNames](subLayerModelName.md) for sublayers."
+    },
+    "layerType": {
+      "type": "string",
+      "enum": [
+        "group",
+        "3DObject",
+        "Point"
+      ],
+      "description": "Possible values are: `group`3DObject`Point`"
+    },
+    "visibility": {
+      "type": "boolean",
+      "description": "Visibility of the sublayer. Default is `true`."
+    },
+    "sublayers": {
+      "type": "array",
+      "items": {
+        "$ref": "sublayer.schema.json"
+      },
+      "description": "Sublayers contained in this layer."
+    },
+    "isEmpty": {
+      "type": "boolean",
+      "description": "Returns true if the layer has no features."
+    }
+  },
+  "required": [
+    "id",
+    "name",
+    "layerType"
+  ],
+  "x-i3s-versions": [
+    "1.10",
+    "1.9",
+    "1.8",
+    "1.7",
+    "1.6"
+  ]
+}

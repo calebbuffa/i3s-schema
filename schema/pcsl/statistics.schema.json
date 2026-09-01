@@ -1,0 +1,24 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "statistics",
+  "description": "Contains statistics about each attribute. Statistics are useful to estimate attribute distribution and range. By convention, statistics are stored by attribute at `layers/0/statistics/{attribute_id}`",
+  "type": "object",
+  "properties": {
+    "attribute": {
+      "type": "string",
+      "description": "Attribute name. Must match the name specified for this attribute in `layer.attributeStorageInfo`"
+    },
+    "stats": {
+      "$ref": "stats.schema.json",
+      "description": "Statistics for this attribute"
+    },
+    "labels": {
+      "$ref": "labels.schema.json",
+      "description": "The statistics document may contain labeling information for the attribute values."
+    }
+  },
+  "x-i3s-versions": [
+    "2.1",
+    "2.0"
+  ]
+}

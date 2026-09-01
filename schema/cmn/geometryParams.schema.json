@@ -1,0 +1,14 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "geometryParams",
+  "description": "The abstract parent object for all geometryParams classes (geometryReferenceParams, vestedGeometryParamas, singleComponentParams). It does not have properties of its own.",
+  "type": "object",
+  "properties": {},
+  "x-i3s-versions": [
+    "1.10",
+    "1.9",
+    "1.8",
+    "1.7",
+    "1.6"
+  ]
+}

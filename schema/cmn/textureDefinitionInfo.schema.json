@@ -1,0 +1,56 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "textureDefinitionInfo",
+  "description": "A texture is a set of images, with some parameters specific to the texture/uv mapping to geometries. Part of [sharedResource](sharedResource.cmn.md) that is deprecated with 1.7.",
+  "type": "object",
+  "properties": {
+    "encoding": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "description": "MIMEtype - The encoding/content type that is used by all images in this map"
+    },
+    "wrap": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "description": "UV wrapping modes, from {none, repeat, mirror}."
+    },
+    "atlas": {
+      "type": "boolean",
+      "description": "TRUE if the Map represents a texture atlas."
+    },
+    "uvSet": {
+      "type": "string",
+      "description": "The name of the UV set to be used as texture coordinates."
+    },
+    "channels": {
+      "type": "string",
+      "enum": [
+        "rgb",
+        "rgba"
+      ],
+      "description": "Indicates channels description. Possible values are: `rgb`rgba`"
+    },
+    "images": {
+      "type": "array",
+      "items": {
+        "$ref": "image.schema.json"
+      },
+      "description": "An image is a binary resource, containing a single raster that can be used to texture a feature or symbol."
+    }
+  },
+  "required": [
+    "encoding"
+  ],
+  "deprecated": true,
+  "x-i3s-versions": [
+    "1.10",
+    "1.9",
+    "1.8",
+    "1.7",
+    "1.6"
+  ]
+}

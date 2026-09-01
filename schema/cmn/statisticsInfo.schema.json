@@ -1,0 +1,32 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "statisticsInfo",
+  "description": "Describes the attribute statistics for the scene layer.",
+  "type": "object",
+  "properties": {
+    "key": {
+      "type": "string",
+      "description": "Key indicating the resource of the statistics. For example f_1 for ./statistics/f_1"
+    },
+    "name": {
+      "type": "string",
+      "description": "Name of the field of the statistical information."
+    },
+    "href": {
+      "type": "string",
+      "description": "The URL to the statistics information. For example ./statistics/f_1"
+    }
+  },
+  "required": [
+    "key",
+    "name",
+    "href"
+  ],
+  "x-i3s-versions": [
+    "1.10",
+    "1.9",
+    "1.8",
+    "1.7",
+    "1.6"
+  ]
+}

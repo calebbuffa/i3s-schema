@@ -1,0 +1,41 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "vertexAttribute",
+  "description": "The vertexAttribute object describes valid properties for a single vertex.",
+  "type": "object",
+  "properties": {
+    "position": {
+      "$ref": "geometryAttribute.schema.json",
+      "description": "The vertex position."
+    },
+    "normal": {
+      "$ref": "geometryAttribute.schema.json",
+      "description": "The vertex normal."
+    },
+    "uv0": {
+      "$ref": "geometryAttribute.schema.json",
+      "description": "The first set of UV coordinates."
+    },
+    "color": {
+      "$ref": "geometryAttribute.schema.json",
+      "description": "The color attribute."
+    },
+    "region": {
+      "$ref": "geometryAttribute.schema.json",
+      "description": "The region attribute."
+    }
+  },
+  "required": [
+    "position",
+    "normal",
+    "uv0",
+    "color"
+  ],
+  "x-i3s-versions": [
+    "1.10",
+    "1.9",
+    "1.8",
+    "1.7",
+    "1.6"
+  ]
+}

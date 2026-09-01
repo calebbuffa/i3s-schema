@@ -1,0 +1,19 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "timeInfo",
+  "description": "Time info represents the temporal data of a time-aware layer. The time info provides information such as date fields storing the start and end times for each feature. The statistic of the time fields defines the time extent as a period of time with a definite start and end time. The time encoding is [ECMA ISO8601](ECMA_ISO8601.md). The date time values can be UTC time or local time with offset to UTC. Temporal data is data that represents a state in time. You can to step through periods of time to reveal patterns and trends in your data.",
+  "type": "object",
+  "properties": {
+    "endTimeField": {
+      "type": "string",
+      "description": "The name of the field containing the end time information."
+    },
+    "startTimeField": {
+      "type": "string",
+      "description": "The name of the field that contains the start time information."
+    }
+  },
+  "x-i3s-versions": [
+    "1.10"
+  ]
+}

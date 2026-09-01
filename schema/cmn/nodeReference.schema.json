@@ -1,0 +1,47 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "nodeReference",
+  "description": "A nodeReference is a pointer to another node - the parent, a child or a neighbor. A nodeReference contains a relative URL to the referenced NID, and a set of meta information which helps determines if a client loads the data and maintains store consistency.",
+  "type": "object",
+  "properties": {
+    "id": {
+      "type": "string",
+      "description": "Tree Key ID of the referenced node represented as string."
+    },
+    "mbs": {
+      "type": "array",
+      "items": {
+        "type": "number"
+      },
+      "minItems": 4,
+      "maxItems": 4,
+      "description": "An array of four doubles, corresponding to x, y, z and radius of the [minimum bounding sphere](mbs.cmn.md) of a node."
+    },
+    "href": {
+      "type": "string",
+      "description": "Number of values per element."
+    },
+    "version": {
+      "type": "string",
+      "description": "Version (store update session ID) of the referenced node."
+    },
+    "featureCount": {
+      "type": "number",
+      "description": "Number of features in the referenced node and its descendants, down to the leaf nodes."
+    },
+    "obb": {
+      "$ref": "obb.schema.json",
+      "description": "Describes oriented bounding box."
+    }
+  },
+  "required": [
+    "id"
+  ],
+  "x-i3s-versions": [
+    "1.10",
+    "1.9",
+    "1.8",
+    "1.7",
+    "1.6"
+  ]
+}

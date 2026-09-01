@@ -1,0 +1,18 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "drawingInfo",
+  "description": "The drawingInfo object contains drawing information for a point cloud scene layer.",
+  "type": "object",
+  "properties": {
+    "renderer": {
+      "description": "An object defining the symbology for the layer. [See more](https://developers.arcgis.com/web-scene-specification/objects/pointCloudRenderers/) information about supported renderer types in ArcGIS clients."
+    }
+  },
+  "required": [
+    "renderer"
+  ],
+  "x-i3s-versions": [
+    "2.1",
+    "2.0"
+  ]
+}

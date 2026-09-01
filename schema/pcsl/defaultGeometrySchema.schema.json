@@ -1,0 +1,58 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "I3S point cloud scene layer: defaultGeometrySchema",
+  "description": "Attribute description as field.",
+  "type": "object",
+  "properties": {
+    "geometryType": {
+      "type": "string",
+      "enum": [
+        "points"
+      ],
+      "description": "The type of primitive. Only points are supported for point cloud scene layer. Must be: `points`"
+    },
+    "header": {
+      "type": "array",
+      "items": {},
+      "description": "The header in binary buffers. Currently not supported for point cloud scene layer."
+    },
+    "topology": {
+      "type": "string",
+      "enum": [
+        "PerAttributeArray"
+      ],
+      "description": "This property is currently **ignored* for point cloud scene layer since it only contains geometry position without vertex attributes. Must be: `PerAttributeArray`"
+    },
+    "encoding": {
+      "type": "string",
+      "enum": [
+        "lepcc-xyz"
+      ],
+      "description": "Only 'lepcc-xyz' compression is currently supported. Must be: `lepcc-xyz`"
+    },
+    "ordering": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "enum": [
+          "position"
+        ]
+      },
+      "description": "Currently the geometry contains XYZ only, so vertex attribute must only list 'position'. Possible values for each array string: `position`: vertex coordinates"
+    },
+    "vertexAttributes": {
+      "$ref": "vertexAttributes.schema.json",
+      "description": "The vertex buffer description."
+    }
+  },
+  "required": [
+    "geometryType",
+    "topology",
+    "encoding",
+    "vertexAttributes"
+  ],
+  "x-i3s-versions": [
+    "2.1",
+    "2.0"
+  ]
+}

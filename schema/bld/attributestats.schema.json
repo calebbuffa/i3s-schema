@@ -1,0 +1,69 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "attributeStatistics",
+  "description": "Concatenated attribute statistics. If needed, the type of the attribute (string or number) may be inferred from `mostFrequentValues` and/or `min`/`max` fields.",
+  "type": "object",
+  "properties": {
+    "fieldName": {
+      "type": "string",
+      "description": "Name of the field."
+    },
+    "label": {
+      "type": "string",
+      "description": "Label of the field name. If label is empty, the label and fieldName are identical."
+    },
+    "modelName": {
+      "type": "string",
+      "enum": [
+        "category",
+        "family",
+        "familyType",
+        "bldgLevel",
+        "createdPhase",
+        "demolishedPhase",
+        "discipline",
+        "assemblyCode",
+        "omniClass",
+        "systemClassifications",
+        "systemType",
+        "systemName",
+        "systemClass",
+        "custom"
+      ],
+      "description": "A fixed string of building information, similar to a filter. Used by client applications to define specific behavior for the modelName. The [default filter types](./defaultFilterTypes.bld.md) define the modelName for the attribute statistics. Possible values are: `category`family`familyType`bldgLevel`createdPhase`demolishedPhase`discipline`assemblyCode`omniClass`systemClassifications`systemType`systemName`systemClass`custom`"
+    },
+    "min": {
+      "type": "number",
+      "description": "Minimum value. Numeric attributes only."
+    },
+    "max": {
+      "type": "number",
+      "description": "Maximum value. Numeric attributes only."
+    },
+    "mostFrequentValues": {
+      "type": "array",
+      "items": {
+        "type": "integer"
+      },
+      "description": "Most frequent value, if applicable for this attribute. Truncated to 256 entries."
+    },
+    "subLayerIds": {
+      "type": "array",
+      "items": {
+        "type": "integer"
+      },
+      "description": "List of sublayers where this attribute may be found."
+    }
+  },
+  "required": [
+    "fieldName",
+    "subLayerIds"
+  ],
+  "x-i3s-versions": [
+    "1.10",
+    "1.9",
+    "1.8",
+    "1.7",
+    "1.6"
+  ]
+}

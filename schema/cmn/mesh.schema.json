@@ -1,0 +1,26 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "mesh",
+  "description": "Mesh object. Mesh geometry for a node. Clients have to use the `resource` identifiers written in each node to access the resources. While content creator may choose to match `resource` with the node id this is not required by the I3S specification and clients should not make this assumption.",
+  "type": "object",
+  "properties": {
+    "material": {
+      "$ref": "meshMaterial.schema.json",
+      "description": "The material definition."
+    },
+    "geometry": {
+      "$ref": "meshGeometry.schema.json",
+      "description": "The geometry definition."
+    },
+    "attribute": {
+      "$ref": "meshAttribute.schema.json",
+      "description": "The attribute set definition."
+    }
+  },
+  "x-i3s-versions": [
+    "1.10",
+    "1.9",
+    "1.8",
+    "1.7"
+  ]
+}

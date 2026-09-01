@@ -1,0 +1,25 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "filterMode: wire frame",
+  "description": "Shows all elements that comply with the filter block of a filter in a building scene layer. The elements are drawn with an edge line.",
+  "type": "object",
+  "properties": {
+    "type": {
+      "type": "string",
+      "enum": [
+        "wireFrame"
+      ],
+      "description": "Declares filter mode of type wire frame. Must be: `wireFrame`"
+    },
+    "edges": {
+      "description": "An object defining solid edges of a feature. [See more](https://developers.arcgis.com/web-scene-specification/objects/edges/) information on supported edges in ArcGIS clients."
+    }
+  },
+  "x-i3s-versions": [
+    "1.10",
+    "1.9",
+    "1.8",
+    "1.7",
+    "1.6"
+  ]
+}

@@ -1,0 +1,31 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "geometryAttribute",
+  "description": "Each geometryAttribute object is an accessor, i.e. a view, into an array buffer. There are two types of geometryAttributes - vertexAttributes and faceAttributes. The vertexAttributes describe valid properties for a single vertex, and faceAttributes describe faces and other structures by providing a set of indices. For example, the faces.position index attribute is used to define which vertex positions make up a face.",
+  "type": "object",
+  "properties": {
+    "byteOffset": {
+      "type": "number",
+      "description": "The starting byte position where the required bytes begin. Only used with the Geometry **arrayBufferView**."
+    },
+    "valueType": {
+      "type": "string",
+      "description": "The element type, from {UInt8, UInt16, Int16, Int32, Int64 or Float32, Float64}."
+    },
+    "valuesPerElement": {
+      "type": "number",
+      "description": "The short number of values need to make a valid element (such as 3 for a xyz position)."
+    }
+  },
+  "required": [
+    "valueType",
+    "valuesPerElement"
+  ],
+  "x-i3s-versions": [
+    "1.10",
+    "1.9",
+    "1.8",
+    "1.7",
+    "1.6"
+  ]
+}

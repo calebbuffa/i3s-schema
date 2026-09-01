@@ -1,0 +1,21 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "meshAttribute",
+  "description": "Mesh attributes for a node.",
+  "type": "object",
+  "properties": {
+    "resource": {
+      "type": "integer",
+      "description": "The resource identifier to be used to locate attribute resources of this mesh. i.e. `layers/0/nodes//attributes/...`"
+    }
+  },
+  "required": [
+    "resource"
+  ],
+  "x-i3s-versions": [
+    "1.10",
+    "1.9",
+    "1.8",
+    "1.7"
+  ]
+}

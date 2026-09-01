@@ -1,0 +1,23 @@
+[package]
+name = "i3s-schema"
+version = "0.1.0"
+edition = "2024"
+license = "Apache-2.0"
+description = "Parse the Esri i3s-spec markdown documentation into draft-07 JSON Schema files"
+publish = false
+
+[lib]
+name = "i3s_schema"
+path = "src/lib.rs"
+
+[[bin]]
+name = "i3s-schema"
+path = "src/main.rs"
+
+[dependencies]
+anyhow = "1"
+clap = { version = "4", features = ["derive"] }
+serde = { version = "1", features = ["derive"] }
+serde_json = { version = "1", features = ["preserve_order"] }
+regex = "1"
+fancy-regex = "0.14"

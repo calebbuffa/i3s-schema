@@ -1,0 +1,27 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "features",
+  "description": "Declaration of the attributes per feature in the geometry, such as feature ID or face range.",
+  "type": "object",
+  "properties": {
+    "featureData": {
+      "type": "array",
+      "items": {
+        "$ref": "featureData.schema.json"
+      }
+    },
+    "geometryData": {
+      "type": "array",
+      "items": {
+        "$ref": "geometry.schema.json"
+      }
+    }
+  },
+  "x-i3s-versions": [
+    "1.10",
+    "1.9",
+    "1.8",
+    "1.7",
+    "1.6"
+  ]
+}

@@ -1,0 +1,18 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "materialDefinition",
+  "description": "Materials describe how a feature or a set of features is to be rendered, including shading and color. Part of [sharedResource](sharedResource.cmn.md) that is deprecated with 1.7.",
+  "type": "object",
+  "properties": {},
+  "additionalProperties": {
+    "$ref": "materialDefinitionInfo.schema.json"
+  },
+  "deprecated": true,
+  "x-i3s-versions": [
+    "1.10",
+    "1.9",
+    "1.8",
+    "1.7",
+    "1.6"
+  ]
+}

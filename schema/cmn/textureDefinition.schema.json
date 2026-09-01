@@ -1,0 +1,18 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "textureDefinition",
+  "description": "A texture is a set of images, with some parameters specific to the texture/uv mapping to geometries. Part of [sharedResource](sharedResource.cmn.md) that is deprecated with 1.7.",
+  "type": "object",
+  "properties": {},
+  "additionalProperties": {
+    "$ref": "textureDefinitionInfo.schema.json"
+  },
+  "deprecated": true,
+  "x-i3s-versions": [
+    "1.10",
+    "1.9",
+    "1.8",
+    "1.7",
+    "1.6"
+  ]
+}

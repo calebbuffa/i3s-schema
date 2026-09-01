@@ -1,0 +1,17 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "geometryBuffer",
+  "description": "Point Geometry Description ` compressedAttributes ` **Important:** - Attribute that are present are stored continuously in the corresponding geometry buffers. - Point Geometry are always compressed",
+  "type": "object",
+  "properties": {
+    "compressedAttributes": {
+      "$ref": "cmn/compressedAttributes.schema.json",
+      "description": "Compressed attributes. **Cannot** be combined with any other attributes."
+    }
+  },
+  "x-i3s-versions": [
+    "1.10",
+    "1.9",
+    "1.8"
+  ]
+}

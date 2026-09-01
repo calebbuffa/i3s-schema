@@ -1,0 +1,22 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "cachedDrawingInfo",
+  "description": "The cachedDrawingInfo object indicates if the *drawingInfo* object is captured as part of the binary scene layer representation. This object is used for the 3D Object and Integrated Mesh scene layer if no [drawingInfo](drawingInfo.cmn.md) is defined.",
+  "type": "object",
+  "properties": {
+    "color": {
+      "type": "boolean",
+      "description": "If true, the drawingInfo is captured as part of the binary scene layer representation."
+    }
+  },
+  "required": [
+    "color"
+  ],
+  "x-i3s-versions": [
+    "1.10",
+    "1.9",
+    "1.8",
+    "1.7",
+    "1.6"
+  ]
+}

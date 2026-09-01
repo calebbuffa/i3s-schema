@@ -1,0 +1,95 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Point Cloud Scene Layer Definition",
+  "type": "object",
+  "properties": {
+    "id": {
+      "type": "integer",
+      "description": "A unique identifying number for the layer. For point cloud scene layer, only a single layer is supported, therefore, id is always 0."
+    },
+    "layerType": {
+      "type": "string",
+      "enum": [
+        "PointCloud"
+      ],
+      "description": "String indicating the layer typeMust be: `PointCloud`"
+    },
+    "name": {
+      "type": "string",
+      "description": "Represents the layer name."
+    },
+    "alias": {
+      "type": "string",
+      "description": "Represents the alias layer name."
+    },
+    "desc": {
+      "type": "string",
+      "description": "Description for the layer."
+    },
+    "copyrightText": {
+      "type": "string",
+      "description": "Copyright information to be displayed with this layer."
+    },
+    "capabilities": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "enum": [
+          "View",
+          "Query",
+          "Extract"
+        ]
+      },
+      "description": "Capabilities supported by this layer. Possible values for each array string: `View`: View is supported. `Query`: Query is supported. `Extract`: Extract is defined."
+    },
+    "spatialReference": {
+      "$ref": "cmn/spatialReference.schema.json",
+      "description": "An object containing the WKID or WKT identifying the spatial reference of the layer's geometry."
+    },
+    "heightModelInfo": {
+      "$ref": "cmn/heightModelInfo.schema.json",
+      "description": "An object containing the vertical coordinate system information."
+    },
+    "serviceUpdateTimeStamp": {
+      "$ref": "cmn/serviceUpdateTimeStamp.schema.json",
+      "description": "Object to provide time stamp when the I3S service or the source of the service was created or updated."
+    },
+    "store": {
+      "$ref": "store.schema.json",
+      "description": "The storage for the layer."
+    },
+    "attributeStorageInfo": {
+      "type": "array",
+      "items": {
+        "$ref": "attributeInfo.schema.json"
+      },
+      "description": "List of attributes included for this layer."
+    },
+    "drawingInfo": {
+      "$ref": "drawingInfo.schema.json",
+      "description": "An object containing drawing information."
+    },
+    "elevationInfo": {
+      "$ref": "elevationInfo.schema.json",
+      "description": "An object containing elevation information."
+    },
+    "fields": {
+      "type": "array",
+      "items": {
+        "$ref": "cmn/field.schema.json"
+      }
+    }
+  },
+  "required": [
+    "id",
+    "layerType",
+    "name",
+    "spatialReference",
+    "store",
+    "attributeStorageInfo"
+  ],
+  "x-i3s-versions": [
+    "2.1",
+    "2.0"
+  ]
+}

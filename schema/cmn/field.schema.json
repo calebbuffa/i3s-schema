@@ -1,0 +1,48 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "field",
+  "description": "A collection of objects describing each attribute field.",
+  "type": "object",
+  "properties": {
+    "name": {
+      "type": "string",
+      "description": "Name of the field."
+    },
+    "type": {
+      "type": "string",
+      "enum": [
+        "esriFieldTypeDate",
+        "esriFieldTypeSingle",
+        "esriFieldTypeDouble",
+        "esriFieldTypeGUID",
+        "esriFieldTypeGlobalID",
+        "esriFieldTypeInteger",
+        "esriFieldTypeOID",
+        "esriFieldTypeSmallInteger",
+        "esriFieldTypeString"
+      ],
+      "description": "Type of the field. Possible values are: `esriFieldTypeDate`esriFieldTypeSingle`esriFieldTypeDouble`esriFieldTypeGUID`esriFieldTypeGlobalID`esriFieldTypeInteger`esriFieldTypeOID`esriFieldTypeSmallInteger`esriFieldTypeString`"
+    },
+    "alias": {
+      "type": "string",
+      "description": "Alias of the field."
+    },
+    "domain": {
+      "$ref": "domain.schema.json",
+      "description": "Array of domains defined for a field."
+    }
+  },
+  "required": [
+    "name",
+    "type"
+  ],
+  "x-i3s-versions": [
+    "2.1",
+    "2.0",
+    "1.10",
+    "1.9",
+    "1.8",
+    "1.7",
+    "1.6"
+  ]
+}

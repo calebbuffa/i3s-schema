@@ -1,0 +1,35 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "histogram",
+  "description": "The bin size may be computed as (max-min)/bin count. Please note that stats.histo.min/max is not equivalent to stats.min/max since values smaller than stats.histo.min and greater than stats.histo.max are counted in the first and last bin respectively. The values stats.min and stats.max may be conservative estimates. The bins would be distributed as follows: `(-inf, stats.min + bin_size], (stats.min + bin_size, stats.min + 2 * bin_size], ... , (stats.min + (bin_count - 1) * bin_size], (stats.min + (bin_count - 1) * bin_size, +inf)`",
+  "type": "object",
+  "properties": {
+    "minimum": {
+      "type": "number",
+      "description": "Minimum value (i.e. left bound) of the first bin of the histogram."
+    },
+    "maximum": {
+      "type": "number",
+      "description": "Maximum value (i.e. right bound) of the last bin of the histogram."
+    },
+    "counts": {
+      "type": "array",
+      "items": {
+        "type": "number"
+      },
+      "description": "Array of binned value counts with up to `n` values, where `n` is the number of bins and **must be less or equal to 256**."
+    }
+  },
+  "required": [
+    "minimum",
+    "maximum",
+    "counts"
+  ],
+  "x-i3s-versions": [
+    "1.10",
+    "1.9",
+    "1.8",
+    "1.7",
+    "1.6"
+  ]
+}

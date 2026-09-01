@@ -1,0 +1,24 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "valueCount",
+  "description": "A scalar or vector value.",
+  "type": "object",
+  "properties": {
+    "value": {
+      "type": "number",
+      "description": "Type of the attribute values after decompression, if applicable. Please note that `string` is not supported for point cloud scene layer attributes."
+    },
+    "count": {
+      "type": "number",
+      "description": "Count the number of values. May exceed 32 bit."
+    }
+  },
+  "required": [
+    "value",
+    "count"
+  ],
+  "x-i3s-versions": [
+    "2.1",
+    "2.0"
+  ]
+}

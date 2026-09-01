@@ -1,0 +1,51 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "fullExtent",
+  "description": "The 3D spatial extent of the object it describes in the given spatial reference. The coordinates of the extent can span across the antimeridian (180th meridian). For example, scene layers in a geographic coordinate system covering New Zealand may have a larger xmin value than xmax value. The fullExtent is used by clients to zoom to a scene layer.",
+  "type": "object",
+  "properties": {
+    "spatialReference": {
+      "$ref": "spatialReference.schema.json",
+      "description": "An object containing the WKID or WKT identifying the spatial reference of the layer's geometry."
+    },
+    "xmin": {
+      "type": "number",
+      "description": "The most east x coordinate."
+    },
+    "ymin": {
+      "type": "number",
+      "description": "The most south y coordinate."
+    },
+    "xmax": {
+      "type": "number",
+      "description": "The most west x coordinate."
+    },
+    "ymax": {
+      "type": "number",
+      "description": "The most north y coordinate."
+    },
+    "zmin": {
+      "type": "number",
+      "description": "The minimum height z coordinate."
+    },
+    "zmax": {
+      "type": "number",
+      "description": "The maximum height z coordinate."
+    }
+  },
+  "required": [
+    "xmin",
+    "ymin",
+    "xmax",
+    "ymax",
+    "zmin",
+    "zmax"
+  ],
+  "x-i3s-versions": [
+    "1.10",
+    "1.9",
+    "1.8",
+    "1.7",
+    "1.6"
+  ]
+}

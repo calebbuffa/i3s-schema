@@ -1,0 +1,19 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "rangeInfo",
+  "description": "Range information allows to filter features of a layer within a minimum and maximum range. Range is often used to visualize indoor spaces like picking a floor of a building or visualize rooms belonging to a specific occupation.",
+  "type": "object",
+  "properties": {
+    "field": {
+      "type": "string",
+      "description": "Field name to used for the range. The statistics of the field will contain the min and max values of all features for this rangeInfo."
+    },
+    "name": {
+      "type": "string",
+      "description": "A unique name that can be referenced by an application to represent the range."
+    }
+  },
+  "x-i3s-versions": [
+    "1.10"
+  ]
+}

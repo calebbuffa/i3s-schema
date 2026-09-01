@@ -1,0 +1,31 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "geometryDefinition",
+  "description": "The geometry definitions used in I3S version 1.7.",
+  "type": "object",
+  "properties": {
+    "topology": {
+      "type": "string",
+      "enum": [
+        "triangle"
+      ],
+      "description": "Defines the topology type of the mesh. Must be: `triangle`"
+    },
+    "geometryBuffers": {
+      "type": "array",
+      "items": {
+        "$ref": "geometryBuffer.schema.json"
+      },
+      "description": "Array of geometry representation(s) for this class of meshes. When multiple representations are listed, Clients should select the most compact they support (e.g. Draco compressed mesh). For compatibility reasons, _uncompressed_ geometry buffer is always required and must be first (i.e. `geometryBuffers[0]`), so array length must be 1 or 2"
+    }
+  },
+  "required": [
+    "geometryBuffers"
+  ],
+  "x-i3s-versions": [
+    "1.10",
+    "1.9",
+    "1.8",
+    "1.7"
+  ]
+}

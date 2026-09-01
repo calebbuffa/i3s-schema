@@ -1,0 +1,24 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "serviceUpdateTimeStamp",
+  "description": "Object to provide time stamp when the I3S service or the source of the service was created or updated.",
+  "type": "object",
+  "properties": {
+    "lastUpdate": {
+      "type": "number",
+      "description": "Specifies the Unix epoch counting from 1 January 1970 in milliseconds. Time stamp is created when the I3S service was created or updated."
+    }
+  },
+  "required": [
+    "lastUpdate"
+  ],
+  "x-i3s-versions": [
+    "2.1",
+    "2.0",
+    "1.10",
+    "1.9",
+    "1.8",
+    "1.7",
+    "1.6"
+  ]
+}

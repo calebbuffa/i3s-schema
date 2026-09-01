@@ -1,0 +1,83 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "domain (i.e. field)",
+  "description": "Attribute domains are rules that describe the legal values of a field type, providing a method for enforcing data integrity. Attribute domains are used to constrain the values allowed in a particular attribute. Using domains helps ensure data integrity by limiting the choice of values for a particular field. Attribute domains can be shared across scene layers like 3D Object scene layers or Building Scene Layers.",
+  "type": "object",
+  "properties": {
+    "type": {
+      "type": "string",
+      "enum": [
+        "codedValue",
+        "range"
+      ],
+      "description": "Type of domainPossible values are: `codedValue`range`"
+    },
+    "name": {
+      "type": "string",
+      "description": "Name of the domain. Must be unique per Scene Layer."
+    },
+    "description": {
+      "type": "string",
+      "description": "Description of the domain"
+    },
+    "fieldType": {
+      "type": "string",
+      "enum": [
+        "esriFieldTypeDate",
+        "esriFieldTypeSingle",
+        "esriFieldTypeDouble",
+        "esriFieldTypeInteger",
+        "esriFieldTypeSmallInteger",
+        "esriFieldTypeString"
+      ],
+      "description": "The field type is the type of attribute field with which the domain can be associated. Possible values are: `esriFieldTypeDate`esriFieldTypeSingle`esriFieldTypeDouble`esriFieldTypeInteger`esriFieldTypeSmallInteger`esriFieldTypeString`"
+    },
+    "range": {
+      "type": "array",
+      "items": {
+        "type": "number"
+      },
+      "minItems": 2,
+      "maxItems": 2,
+      "description": "Range of the domain. Only numeric types are possible."
+    },
+    "codedValues": {
+      "type": "array",
+      "items": {
+        "$ref": "domainCodedValue.schema.json"
+      },
+      "description": "Range of the domain. Only string types are possible."
+    },
+    "mergePolicy": {
+      "type": "string",
+      "enum": [
+        "esriMPTDefaultValue",
+        "esriMPTSumValues",
+        "esriMPTAreaWeighted"
+      ],
+      "description": "Merge policy for the domain. Not used by Scene Layers. Possible values are: `esriMPTDefaultValue`esriMPTSumValues`esriMPTAreaWeighted`"
+    },
+    "splitPolicy": {
+      "type": "string",
+      "enum": [
+        "esriSPTGeometryRatio",
+        "esriSPTDuplicate",
+        "esriSPTDefaultValue"
+      ],
+      "description": "Split policy for the domain. Not used by Scene Layers. Possible values are: `esriSPTGeometryRatio`esriSPTDuplicate`esriSPTDefaultValue`"
+    }
+  },
+  "required": [
+    "type",
+    "name"
+  ],
+  "x-i3s-versions": [
+    "2.1",
+    "2.0",
+    "1.10",
+    "1.9",
+    "1.8",
+    "1.7",
+    "1.6"
+  ]
+}

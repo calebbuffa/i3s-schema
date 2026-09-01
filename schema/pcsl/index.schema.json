@@ -1,0 +1,41 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "index",
+  "description": "Describes the index (i.e. bounding volume tree) of the layer.",
+  "type": "object",
+  "properties": {
+    "nodeVersion": {
+      "type": "integer",
+      "description": "The version of the individual nodes format."
+    },
+    "nodesPerPage": {
+      "type": "integer",
+      "description": "The page size describes the number of nodes per paged index document. 64 is currently expected."
+    },
+    "boundingVolumeType": {
+      "type": "string",
+      "enum": [
+        "obb"
+      ],
+      "description": "The bounding volume type. Only OBB is currently supported. Must be: `obb`: Oriented bounding box"
+    },
+    "lodSelectionMetricType": {
+      "type": "string",
+      "enum": [
+        "density-threshold"
+      ],
+      "description": "Defines how `node.lodThreshold` should be interpretedMust be: `density-threshold`: nodes[i].lodThreshold will represent an 'effective' 2D area for the node. This estimation works best when the point cloud scene layer represents a surface and is not volumetric. World space density is defined as Dw = node.pointCount / node.effectiveArea. Ds is Dw converted to screen space. Client would switch LOD when Ds is less/greater than a threshold defined by the client. For example, 0.1 point per pixel square. Note for point cloud scene layer creation: If each point footprint is assumed to be identical (say 0.1x0.1 unit), then the lodThreshold may be computed as number_of_points * point_footprint for a leaf node and sum( children[i].effective_area) for inner nodes."
+    },
+    "href": {
+      "type": "string"
+    }
+  },
+  "required": [
+    "nodeVersion",
+    "nodesPerPage"
+  ],
+  "x-i3s-versions": [
+    "2.1",
+    "2.0"
+  ]
+}

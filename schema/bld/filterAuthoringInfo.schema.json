@@ -1,0 +1,33 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "filterAuthoringInfo",
+  "description": "The filter authoring info object contains metadata about the authoring process for creating a filter object. This allows the authoring client to save specific, overridable settings. The next time it is accessed with an authoring client, the selections are remembered. Non-authoring clients can ignore it.",
+  "type": "object",
+  "properties": {
+    "type": {
+      "type": "string",
+      "enum": [
+        "checkbox"
+      ],
+      "description": "Declares type or filter authoring info. Must be: `checkbox`: Client UI with checkbox representation for each filter type and filter value."
+    },
+    "filterBlocks": {
+      "type": "array",
+      "items": {
+        "$ref": "filterBlockAuthoringInfo.schema.json"
+      },
+      "description": "Array of filter block authoring info."
+    }
+  },
+  "required": [
+    "type",
+    "filterBlocks"
+  ],
+  "x-i3s-versions": [
+    "1.10",
+    "1.9",
+    "1.8",
+    "1.7",
+    "1.6"
+  ]
+}

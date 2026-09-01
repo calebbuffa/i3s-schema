@@ -1,0 +1,43 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "geometryPosition",
+  "description": "Position vertex attribute. Relative to the center of oriented-bounded box of the node.",
+  "type": "object",
+  "properties": {
+    "type": {
+      "type": "string",
+      "enum": [
+        "Float32"
+      ],
+      "description": "Vertex positions relative to Oriented-bounding-box center. Must be: `Float32`"
+    },
+    "component": {
+      "type": "integer",
+      "description": "Number of coordinates per vertex position. Must be 3."
+    },
+    "encoding": {
+      "type": "string",
+      "enum": [
+        "none"
+      ],
+      "description": "Encoding. Must be: `none`"
+    },
+    "binding": {
+      "type": "string",
+      "enum": [
+        "per-vertex"
+      ],
+      "description": "Must be: `per-vertex`"
+    }
+  },
+  "required": [
+    "type",
+    "component"
+  ],
+  "x-i3s-versions": [
+    "1.10",
+    "1.9",
+    "1.8",
+    "1.7"
+  ]
+}

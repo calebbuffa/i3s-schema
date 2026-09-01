@@ -1,0 +1,47 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "attributeInfo",
+  "description": "List of attributes included for this layer.",
+  "type": "object",
+  "properties": {
+    "key": {
+      "type": "string",
+      "description": "Represents the attribute key. Key is the same as `id' used in the resource URL to fetch the binary buffers."
+    },
+    "name": {
+      "type": "string",
+      "description": "The attribute name. Must be unique for this layer."
+    },
+    "ordering": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "enum": [
+          "attributeValues"
+        ]
+      },
+      "description": "Mapping between attribute to point. Only 1-to-1 is currently supported. Possible values for each array string: `attributeValues`"
+    },
+    "encoding": {
+      "type": "string",
+      "enum": [
+        "embedded-elevation",
+        "lepcc-intensity",
+        "lepcc-rgb"
+      ],
+      "description": "Encoding (i.e. compression) for the attribute binary buffer if different from GZIP or no-compression. Possible values are: `embedded-elevation`: No binary buffer but stats for this pseudo attribute will be available. For example, point.z from the geometry should be used. `lepcc-intensity`: LEPCC compression for scaled integral type. `lepcc-rgb`: LEPCC color compression for 3-channel RGB 8 bit."
+    },
+    "attributeValues": {
+      "$ref": "value.schema.json",
+      "description": "Represents the description for value encoding, for example scalar or vector encoding."
+    }
+  },
+  "required": [
+    "key",
+    "name"
+  ],
+  "x-i3s-versions": [
+    "2.1",
+    "2.0"
+  ]
+}

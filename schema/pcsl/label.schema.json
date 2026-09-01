@@ -1,0 +1,24 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "label",
+  "description": "Label object for the statistics labels in the point cloud profile.",
+  "type": "object",
+  "properties": {
+    "value": {
+      "type": "number",
+      "description": "Value"
+    },
+    "label": {
+      "type": "string",
+      "description": "Label string"
+    }
+  },
+  "required": [
+    "value",
+    "label"
+  ],
+  "x-i3s-versions": [
+    "2.1",
+    "2.0"
+  ]
+}

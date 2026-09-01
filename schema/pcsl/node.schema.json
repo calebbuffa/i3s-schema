@@ -1,0 +1,42 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "node",
+  "description": "A single bounding volume hierarchy node",
+  "type": "object",
+  "properties": {
+    "resourceId": {
+      "type": "integer",
+      "description": "Index of the first child of this node. The resourceID must be used to query node resources, like geometry buffer (XYZ) /nodes//geometry/0 and attribute buffers. One buffer can have one attribute. Available attributes are declared in the SceneLayer document. /nodes//attributes/."
+    },
+    "firstChild": {
+      "type": "integer",
+      "description": "Index of the first child of this node."
+    },
+    "childCount": {
+      "type": "integer",
+      "description": "Number of children for this node. Value is 0 if node is a leaf node."
+    },
+    "vertexCount": {
+      "type": "integer",
+      "description": "Number of points for this node."
+    },
+    "obb": {
+      "$ref": "cmn/obb.schema.json",
+      "description": "Oriented bounding boxes (OBB) are the only supported bounding volumes."
+    },
+    "lodThreshold": {
+      "type": "number",
+      "description": "This metric may be used as a threshold to split a parent node into its children. See [layer.store.index.lodSelectionMetricType](index.pcsl.md)"
+    }
+  },
+  "required": [
+    "resourceId",
+    "firstChild",
+    "childCount",
+    "obb"
+  ],
+  "x-i3s-versions": [
+    "2.1",
+    "2.0"
+  ]
+}

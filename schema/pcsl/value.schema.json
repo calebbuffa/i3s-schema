@@ -1,0 +1,34 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "value",
+  "description": "A scalar or vector value.",
+  "type": "object",
+  "properties": {
+    "valueType": {
+      "type": "string",
+      "enum": [
+        "Int8",
+        "UInt8",
+        "Int16",
+        "UInt16",
+        "Int32",
+        "UInt32",
+        "Float32",
+        "Float64"
+      ],
+      "description": "Type of the attribute values after decompression, if applicable. Please note that `string` is not supported for point cloud scene layer attributes. Possible values are: `Int8`UInt8`Int16`UInt16`Int32`UInt32`Float32`Float64`"
+    },
+    "valuesPerElement": {
+      "type": "number",
+      "description": "Number of components."
+    }
+  },
+  "required": [
+    "valueType",
+    "valuesPerElement"
+  ],
+  "x-i3s-versions": [
+    "2.1",
+    "2.0"
+  ]
+}

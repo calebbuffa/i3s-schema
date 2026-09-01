@@ -1,0 +1,34 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "meshGeometry",
+  "description": "Mesh geometry for a node.",
+  "type": "object",
+  "properties": {
+    "definition": {
+      "type": "integer",
+      "description": "The index in [layer.geometryDefinitions](geometryDefinition.cmn.md) array"
+    },
+    "resource": {
+      "type": "integer",
+      "description": "The resource locator to be used to query geometry resources: `layers/0/nodes/{this.resource}/geometries/{layer.geometryDefinitions[this.definition].geometryBuffers[0 or 1]}`."
+    },
+    "vertexCount": {
+      "type": "integer",
+      "description": "Number of vertices in the geometry buffer of this mesh for the **umcompressed mesh buffer**. Please note that `Draco` compressed meshes may have less vertices due to de-duplication (actual number of vertices is part of the Draco binary blob). Default=`0`"
+    },
+    "featureCount": {
+      "type": "integer",
+      "description": "Number of features for this mesh. Default=`0`. (Must omit or set to `0` if mesh doesn't use `features`.)"
+    }
+  },
+  "required": [
+    "definition",
+    "resource"
+  ],
+  "x-i3s-versions": [
+    "1.10",
+    "1.9",
+    "1.8",
+    "1.7"
+  ]
+}

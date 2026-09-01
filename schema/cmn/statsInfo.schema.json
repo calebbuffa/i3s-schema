@@ -1,0 +1,66 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "statsInfo",
+  "description": "Contains statistics about each attribute. Statistics are useful to estimate attribute distribution and range. The content depends on the [field types](field.cmn.md).",
+  "type": "object",
+  "properties": {
+    "totalValuesCount": {
+      "type": "number",
+      "description": "Represents the count of the value."
+    },
+    "min": {
+      "type": "number",
+      "description": "Minimum attribute value for the entire layer."
+    },
+    "max": {
+      "type": "number",
+      "description": "Maximum attribute value for the entire layer."
+    },
+    "minTimeStr": {
+      "type": "string",
+      "description": "Minimum time string represented according to [time encoding](value.cmn.md). Only used for esriFieldTypeDate i3s version 1.9 or newer."
+    },
+    "maxTimeStr": {
+      "type": "string",
+      "description": "Maximum time string represented according to [time encoding](value.cmn.md). Only used for esriFieldTypeDate i3s version 1.9 or newer."
+    },
+    "count": {
+      "type": "number",
+      "description": "Count for the entire layer."
+    },
+    "sum": {
+      "type": "number",
+      "description": "Sum of the attribute values over the entire layer."
+    },
+    "avg": {
+      "type": "number",
+      "description": "Representing average or mean value. For example, sum/count."
+    },
+    "stddev": {
+      "type": "number",
+      "description": "Representing the standard deviation."
+    },
+    "variance": {
+      "type": "number",
+      "description": "Representing variance. For example, stats.stddev *stats.stddev."
+    },
+    "histogram": {
+      "$ref": "histogram.schema.json",
+      "description": "Represents the histogram."
+    },
+    "mostFrequentValues": {
+      "type": "array",
+      "items": {
+        "$ref": "valuecount.schema.json"
+      },
+      "description": "An array of most frequently used values within the point cloud scene layer."
+    }
+  },
+  "x-i3s-versions": [
+    "1.10",
+    "1.9",
+    "1.8",
+    "1.7",
+    "1.6"
+  ]
+}
