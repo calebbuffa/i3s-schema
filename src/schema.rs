@@ -105,6 +105,13 @@ pub fn type_schema(
             } else {
                 obj.insert("enum".into(), enum_val);
             }
+            let mut rust_names = Map::new();
+            if enum_values.iter().any(|value| value == "3DObject") {
+                rust_names.insert("3DObject".into(), Value::String("ThreeDObject".into()));
+            }
+            if !rust_names.is_empty() {
+                obj.insert("x-rust-variant-names".into(), Value::Object(rust_names));
+            }
         }
         if !prop.description.is_empty() {
             obj.insert(
@@ -210,13 +217,12 @@ fn type_desc_schema(
         TypeDesc::Reference {
             base_name, profile, ..
         } => {
-            // Same-profile refs are bare filenames (resolve context-relatively
-            // in the generator); cross-profile refs include the profile dir and
-            // resolve via the generator's schema search paths.
+            // References are resolved relative to the containing schema file.
+            // Cross-profile files therefore step up from their profile directory.
             let target = if profile == own_profile {
                 format!("{}.schema.json", canon(base_name, profile))
             } else {
-                format!("{}/{}.schema.json", profile, canon(base_name, profile))
+                format!("../{}/{}.schema.json", profile, canon(base_name, profile))
             };
             let mut m = Map::new();
             m.insert("$ref".into(), Value::String(target));
