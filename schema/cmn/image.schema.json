@@ -9,9 +9,7 @@
       "description": "A unique ID for each image. Generated using the BuildID function."
     },
     "size": {
-      "type": "integer",
-      "minimum": 0,
-      "maximum": 4294967295,
+      "type": "number",
       "description": "width of this image, in pixels."
     },
     "pixelInWorldUnits": {

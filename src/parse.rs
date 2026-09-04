@@ -293,6 +293,17 @@ fn infer_numeric_domain(
     if lower_desc.contains("-1") || lower_desc.contains("negative") {
         return None;
     }
+    // Nor is a quantity narrowable when the prose names a floating-point
+    // representation, however count-like its name looks. `obb.halfSize` and
+    // `pivotOffset` are spatial measurements described as doubles.
+    if lower_desc.contains("double")
+        || lower_desc.contains("float")
+        || lower_desc.contains("fraction")
+        || lower_desc.contains("meters")
+        || lower_desc.contains("units of the crs")
+    {
+        return None;
+    }
 
     let snake = name
         .chars()
@@ -305,43 +316,49 @@ fn infer_numeric_domain(
         })
         .collect::<String>();
     let words: Vec<&str> = snake.split('_').filter(|w| !w.is_empty()).collect();
-    let is_counting = words.iter().any(|word| {
-        matches!(
-            *word,
-            "count"
-                | "index"
-                | "id"
-                | "size"
-                | "offset"
-                | "number"
-                | "num"
-                | "version"
-                | "wkid"
-                | "resource"
-                | "definition"
-                | "component"
-                | "components"
-                | "level"
-                | "bit"
-                | "page"
-                | "pages"
-                | "child"
-                | "children"
-                | "texel"
-                | "vertices"
+    // `size` and `offset` are ambiguous on their own: a `byteOffset` is a
+    // count of bytes, but a `halfSize` is a distance. Only the byte-qualified
+    // forms are counts, so they are matched as pairs rather than as words.
+    let byte_qualified = words.windows(2).any(|pair| {
+        pair[0] == "byte" && matches!(pair[1], "offset" | "offsets" | "size" | "sizes" | "length")
+    });
+    let is_counting = byte_qualified
+        || words.iter().any(|word| {
+            matches!(
+                *word,
+                "count"
+                    | "index"
+                    | "id"
+                    | "number"
+                    | "num"
+                    | "version"
+                    | "wkid"
+                    | "resource"
+                    | "definition"
+                    | "component"
+                    | "components"
+                    | "level"
+                    | "bit"
+                    | "page"
+                    | "pages"
+                    | "child"
+                    | "children"
+                    | "texel"
+                    | "vertices"
                 | "features"
                 | "points"
                 | "length"
                 | "capacity"
-                | "coord"
-                | "counts"
-                | "range"
-                | "elements"
-                | "ids"
-                | "layers"
-                | "values"
-        )
-    }) || name.ends_with("Id")
+                    | "coord"
+                    | "counts"
+                    | "range"
+                    | "elements"
+                    | "ids"
+                    | "layers"
+                    | "values"
+            )
+        })
+        || name.ends_with("Id")
         || name.ends_with("ID")
         || name.ends_with("Ids")
         || name.ends_with("IDs")
@@ -727,6 +744,48 @@ mod numeric_tests {
     fn primitive(name: &str) -> TypeDesc {
         TypeDesc::Primitive {
             type_name: name.to_string(),
+        }
+    }
+
+    #[test]
+    fn spatial_measurements_stay_floating_point() {
+        // `halfSize` and `pivotOffset` contain the words "size" and "offset"
+        // but are distances in CRS units, not counts of anything. Narrowing
+        // them to integers would silently truncate every bounding box.
+        assert_eq!(
+            infer_numeric_domain(
+                "halfSize",
+                &TypeDesc::FixedArray {
+                    element_type: "number".to_string(),
+                    size: 3,
+                },
+                "Half size of the oriented bounding box in units of the CRS.",
+            ),
+            None
+        );
+        assert_eq!(
+            infer_numeric_domain(
+                "pivotOffset",
+                &TypeDesc::FixedArray {
+                    element_type: "number".to_string(),
+                    size: 3,
+                },
+                "An array of three doubles, providing an optional pivot offset.",
+            ),
+            None
+        );
+    }
+
+    #[test]
+    fn byte_qualified_offsets_and_sizes_are_still_counts() {
+        // `byteOffset` and `byteSize` really are counts of bytes, so the
+        // narrowing must survive the guard added for spatial measurements.
+        for name in ["byteOffset", "byteSize", "attributeByteCounts"] {
+            assert_eq!(
+                infer_numeric_domain(name, &primitive("number"), "The starting byte position."),
+                Some(NumericDomain::NonNegative),
+                "{name} should narrow"
+            );
         }
     }
 

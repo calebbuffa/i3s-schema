@@ -15,9 +15,7 @@
       "description": "Possible values are: `relativeToGround`absoluteHeight`onTheGround`relativeToScene`"
     },
     "offset": {
-      "type": "integer",
-      "minimum": 0,
-      "maximum": 4294967295,
+      "type": "number",
       "description": "Offset is always added to the result of the above logic except for onTheGround where offset is ignored."
     },
     "unit": {
