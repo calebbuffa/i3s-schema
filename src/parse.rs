@@ -351,7 +351,6 @@ fn infer_numeric_domain(
                 | "capacity"
                     | "coord"
                     | "counts"
-                    | "range"
                     | "elements"
                     | "ids"
                     | "layers"
@@ -373,6 +372,7 @@ fn infer_numeric_domain(
         || lower_desc.starts_with("estimated number of")
         || lower_desc.contains("count of elements")
         || lower_desc.contains("inclusive indices")
+        || lower_desc.contains("inclusive range of")
         || lower_desc.contains("binned value counts")
         || lower_desc.contains("list of sublayers");
 
