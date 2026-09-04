@@ -107,18 +107,18 @@
       "description": "Information on the Indexing Scheme (QuadTree, R-Tree, Octree, ...) used."
     },
     "defaultGeometrySchema": {
-      "$ref": "cmn/defaultGeometrySchema.schema.json",
+      "$ref": "../cmn/defaultGeometrySchema.schema.json",
       "description": "A common, global ArrayBufferView definition that can be used if the schema of vertex attributes and face attributes is consistent in an entire cache; this is a requirement for meshpyramids caches."
     },
     "defaultTextureDefinition": {
       "type": "array",
       "items": {
-        "$ref": "cmn/texture.schema.json"
+        "$ref": "../cmn/texture.schema.json"
       },
       "description": "A common, global TextureDefinition to be used for all textures in this store. The default texture definition uses a reduced profile of the full TextureDefinition, with the following attributes being mandatory: encoding, uvSet, wrap and channels."
     },
     "defaultMaterialDefinition": {
-      "$ref": "cmn/materialDefinition.schema.json",
+      "$ref": "../cmn/materialDefinition.schema.json",
       "description": "If a store uses only one material, it can be defined here entirely as a MaterialDefinition."
     }
   },

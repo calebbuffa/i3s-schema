@@ -41,14 +41,24 @@ impl SchemaStore {
 
     /// Resolve a `$ref` relative to the schema file that contains it
     /// (`current_dir` = "profile/" prefix of that file), mirroring
-    /// file-relative JSON Schema resolution.
-    fn resolve(&self, reference: &str, current_dir: &str) -> Option<&Value> {
-        if reference.contains('/') {
-            self.files.get(&reference.to_lowercase())
+    /// file-relative JSON Schema resolution. Returns the resolved schema
+    /// along with the directory prefix that *its* own bare refs resolve in.
+    fn resolve(&self, reference: &str, current_dir: &str) -> Option<(&Value, String)> {
+        // `../` and `./` are relative to the referring schema's directory;
+        // anything else containing a separator is rooted at the schema tree.
+        let key = if reference.starts_with("./") || reference.starts_with("../") {
+            normalize_relative(current_dir, reference)?
+        } else if reference.contains('/') {
+            reference.to_string()
         } else {
-            self.files
-                .get(&format!("{current_dir}{reference}").to_lowercase())
-        }
+            format!("{current_dir}{reference}")
+        };
+        let value = self.files.get(&key.to_lowercase())?;
+        let dir = match key.rfind('/') {
+            Some(idx) => key[..=idx].to_string(),
+            None => String::new(),
+        };
+        Some((value, dir))
     }
 
     /// Validate `instance` against the schema at `<profile>/<file>`.
@@ -56,9 +66,7 @@ impl SchemaStore {
     pub fn validate(&self, profile: &str, file: &str, instance: &Value) -> Vec<String> {
         let mut errors = Vec::new();
         match self.resolve(file, &format!("{profile}/")) {
-            Some(schema) => {
-                self.validate_value(instance, schema, &format!("{profile}/"), "$", &mut errors)
-            }
+            Some((schema, dir)) => self.validate_value(instance, schema, &dir, "$", &mut errors),
             None => errors.push(format!("schema not found: {profile}/{file}")),
         }
         errors
@@ -75,15 +83,9 @@ impl SchemaStore {
         // relative to the *containing* schema file's directory, and bare
         // refs inside the target keep resolving there (file-relative).
         if let Some(reference) = schema.get("$ref").and_then(Value::as_str) {
-            let dir = if reference.contains('/') {
-                let idx = reference.rfind('/').unwrap();
-                &reference[..=idx]
-            } else {
-                current_dir
-            };
             match self.resolve(reference, current_dir) {
-                Some(target) => {
-                    self.validate_value(instance, target, dir, path, errors);
+                Some((target, dir)) => {
+                    self.validate_value(instance, target, &dir, path, errors);
                 }
                 None => errors.push(format!("{path}: unresolved $ref {reference:?}")),
             }
@@ -214,4 +216,47 @@ pub fn validate_examples(ir: &crate::parse::Ir, store: &SchemaStore) -> (usize, 
         }
     }
     (checked, failures)
+}
+
+/// Resolve a `./` or `../` reference against `current_dir` (a `"profile/"`
+/// style prefix), yielding a schema-tree-rooted key. Returns `None` if the
+/// reference escapes above the schema tree root.
+fn normalize_relative(current_dir: &str, reference: &str) -> Option<String> {
+    let mut segments: Vec<&str> = current_dir.split('/').filter(|s| !s.is_empty()).collect();
+    for segment in reference.split('/') {
+        match segment {
+            "" | "." => {}
+            ".." => {
+                segments.pop()?;
+            }
+            other => segments.push(other),
+        }
+    }
+    Some(segments.join("/"))
+}
+
+#[cfg(test)]
+mod tests {
+    use super::normalize_relative;
+
+    #[test]
+    fn parent_reference_resolves_across_profiles() {
+        assert_eq!(
+            normalize_relative("pcsl/", "../cmn/obb.schema.json").as_deref(),
+            Some("cmn/obb.schema.json")
+        );
+    }
+
+    #[test]
+    fn same_directory_reference_keeps_profile() {
+        assert_eq!(
+            normalize_relative("psl/", "./store.schema.json").as_deref(),
+            Some("psl/store.schema.json")
+        );
+    }
+
+    #[test]
+    fn escaping_the_schema_root_is_rejected() {
+        assert_eq!(normalize_relative("cmn/", "../../etc/passwd"), None);
+    }
 }

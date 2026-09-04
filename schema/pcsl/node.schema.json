@@ -21,7 +21,7 @@
       "description": "Number of points for this node."
     },
     "obb": {
-      "$ref": "cmn/obb.schema.json",
+      "$ref": "../cmn/obb.schema.json",
       "description": "Oriented bounding boxes (OBB) are the only supported bounding volumes."
     },
     "lodThreshold": {

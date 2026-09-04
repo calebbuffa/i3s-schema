@@ -10,6 +10,15 @@
     },
     "valueType": {
       "type": "string",
+      "enum": [
+        "UInt8",
+        "UInt16",
+        "Int16",
+        "Int32",
+        "Int64",
+        "Float32",
+        "Float64"
+      ],
       "description": "The element type, from {UInt8, UInt16, Int16, Int32, Int64 or Float32, Float64}."
     },
     "valuesPerElement": {

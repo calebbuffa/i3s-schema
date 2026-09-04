@@ -14,7 +14,12 @@
     "wrap": {
       "type": "array",
       "items": {
-        "type": "string"
+        "type": "string",
+        "enum": [
+          "none",
+          "repeat",
+          "mirror"
+        ]
       },
       "description": "UV wrapping modes, from {none, repeat, mirror}."
     },

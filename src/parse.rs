@@ -186,11 +186,41 @@ fn extract_enum_values(description: &str) -> Option<Vec<String>> {
         .captures_iter(description)
         .map(|m| m[1].to_string())
         .collect();
-    if matches.is_empty() {
-        None
-    } else {
-        Some(matches)
+    if !matches.is_empty() {
+        return Some(matches);
     }
+    extract_brace_set_values(description)
+}
+
+/// Recognize the spec's alternate enumeration prose, a brace-delimited set of
+/// bare tokens: `"The element type, from {UInt8, UInt16, ... or Float32}"`.
+///
+/// Only sets whose members are *all* bare identifier-like tokens are accepted,
+/// so prose braces such as `{R,G,B,A}` used to illustrate a value layout, or
+/// `{# of vertices}`, do not masquerade as enumerations.
+fn extract_brace_set_values(description: &str) -> Option<Vec<String>> {
+    static SET_RE: LazyLock<Regex> = LazyLock::new(|| Regex::new(r"\bfrom \{([^{}]+)\}").unwrap());
+    static TOKEN_RE: LazyLock<Regex> =
+        LazyLock::new(|| Regex::new(r"^[A-Za-z][A-Za-z0-9_.-]*$").unwrap());
+
+    let captures = SET_RE.captures(description)?;
+    let mut values = Vec::new();
+    for part in captures[1].split(',') {
+        // The final member is often joined with "or": `Int64 or Float32`.
+        for token in part.split(" or ") {
+            let token = token.trim();
+            if token.is_empty() {
+                continue;
+            }
+            if !TOKEN_RE.is_match(token) {
+                return None;
+            }
+            if !values.contains(&token.to_string()) {
+                values.push(token.to_string());
+            }
+        }
+    }
+    if values.len() < 2 { None } else { Some(values) }
 }
 
 fn is_deprecated(description: &str) -> bool {
@@ -499,4 +529,62 @@ pub fn parse_spec(spec_dir: &Path) -> Result<(Ir, VersionIndex, Vec<String>)> {
         version_index,
         warnings,
     ))
+}
+
+#[cfg(test)]
+mod tests {
+    use super::extract_enum_values;
+
+    #[test]
+    fn li_backtick_lists_take_precedence() {
+        let desc = "A feature integer ID.<div>Possible values are:<ul><li>`UInt16`</li><li>`UInt32`</li></ul></div>";
+        assert_eq!(
+            extract_enum_values(desc),
+            Some(vec!["UInt16".into(), "UInt32".into()])
+        );
+    }
+
+    #[test]
+    fn brace_set_with_trailing_or_is_an_enum() {
+        // `geometryAttribute.valueType`, verbatim from the spec.
+        let desc =
+            "The element type, from {UInt8, UInt16, Int16, Int32, Int64 or Float32, Float64}.";
+        assert_eq!(
+            extract_enum_values(desc),
+            Some(vec![
+                "UInt8".into(),
+                "UInt16".into(),
+                "Int16".into(),
+                "Int32".into(),
+                "Int64".into(),
+                "Float32".into(),
+                "Float64".into(),
+            ])
+        );
+    }
+
+    #[test]
+    fn brace_set_applies_to_array_valued_properties() {
+        // `textureDefinitionInfo.wrap`, typed `string[]`.
+        let desc = "UV wrapping modes, from {none, repeat, mirror}.";
+        assert_eq!(
+            extract_enum_values(desc),
+            Some(vec!["none".into(), "repeat".into(), "mirror".into()])
+        );
+    }
+
+    #[test]
+    fn illustrative_prose_braces_are_not_enums() {
+        // `geometryColor.component` describes a value layout, not a value set.
+        let desc = "Number of colors. Must be `1` (opaque grayscale: `{R,R,R,255}`).";
+        assert_eq!(extract_enum_values(desc), None);
+        // Not introduced by `from`, so never considered.
+        let desc = "computed as `#component * sizeof( type ) * {# of vertices}`";
+        assert_eq!(extract_enum_values(desc), None);
+    }
+
+    #[test]
+    fn single_member_brace_set_is_not_an_enum() {
+        assert_eq!(extract_enum_values("a value from {only}."), None);
+    }
 }

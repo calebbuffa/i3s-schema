@@ -5,7 +5,7 @@
   "type": "object",
   "properties": {
     "compressedAttributes": {
-      "$ref": "cmn/compressedAttributes.schema.json",
+      "$ref": "../cmn/compressedAttributes.schema.json",
       "description": "Compressed attributes. **Cannot** be combined with any other attributes."
     }
   },
