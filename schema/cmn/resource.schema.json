@@ -19,7 +19,9 @@
     "featureRange": {
       "type": "array",
       "items": {
-        "type": "number"
+        "type": "integer",
+        "minimum": 0,
+        "maximum": 4294967295
       },
       "description": "**Deprecated.** Only applicable for featureData resources. Provides inclusive indices of the features list in this node that indicate which features of the node are located in this bundle.",
       "deprecated": true
@@ -32,7 +34,9 @@
     "vertexElements": {
       "type": "array",
       "items": {
-        "type": "number"
+        "type": "integer",
+        "minimum": 0,
+        "maximum": 4294967295
       },
       "description": "**Deprecated.** Only applicable for geometryData resources. Represents the count of elements in vertexAttributes; multiply by the sum of bytes required for each element as defined in the defaultGeometrySchema.",
       "deprecated": true
@@ -40,7 +44,9 @@
     "faceElements": {
       "type": "array",
       "items": {
-        "type": "number"
+        "type": "integer",
+        "minimum": 0,
+        "maximum": 4294967295
       },
       "description": "**Deprecated.** Only applicable for geometryData resources. Represents the count of elements in faceAttributes; multiply by the sum of bytes required for each element as defined in the defaultGeometrySchema.",
       "deprecated": true

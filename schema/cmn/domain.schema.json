@@ -35,7 +35,9 @@
     "range": {
       "type": "array",
       "items": {
-        "type": "number"
+        "type": "integer",
+        "minimum": 0,
+        "maximum": 4294967295
       },
       "minItems": 2,
       "maxItems": 2,

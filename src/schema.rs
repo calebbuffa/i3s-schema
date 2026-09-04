@@ -128,13 +128,6 @@ pub fn type_schema(
             } else {
                 obj.insert("enum".into(), enum_val);
             }
-            let mut rust_names = Map::new();
-            if enum_values.iter().any(|value| value == "3DObject") {
-                rust_names.insert("3DObject".into(), Value::String("ThreeDObject".into()));
-            }
-            if !rust_names.is_empty() {
-                obj.insert("x-rust-variant-names".into(), Value::Object(rust_names));
-            }
         }
         if !prop.description.is_empty() {
             obj.insert(

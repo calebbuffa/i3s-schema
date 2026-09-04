@@ -43,14 +43,18 @@
     "mostFrequentValues": {
       "type": "array",
       "items": {
-        "type": "integer"
+        "type": "integer",
+        "minimum": 0,
+        "maximum": 4294967295
       },
       "description": "Most frequent value, if applicable for this attribute. Truncated to 256 entries."
     },
     "subLayerIds": {
       "type": "array",
       "items": {
-        "type": "integer"
+        "type": "integer",
+        "minimum": 0,
+        "maximum": 4294967295
       },
       "description": "List of sublayers where this attribute may be found."
     }

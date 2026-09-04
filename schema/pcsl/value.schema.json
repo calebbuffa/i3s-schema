@@ -19,7 +19,9 @@
       "description": "Type of the attribute values after decompression, if applicable. Please note that `string` is not supported for point cloud scene layer attributes. Possible values are: `Int8`UInt8`Int16`UInt16`Int32`UInt32`Float32`Float64`"
     },
     "valuesPerElement": {
-      "type": "number",
+      "type": "integer",
+      "minimum": 0,
+      "maximum": 4294967295,
       "description": "Number of components."
     }
   },

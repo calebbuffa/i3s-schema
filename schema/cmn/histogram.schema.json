@@ -15,7 +15,9 @@
     "counts": {
       "type": "array",
       "items": {
-        "type": "number"
+        "type": "integer",
+        "minimum": 0,
+        "maximum": 4294967295
       },
       "description": "Array of binned value counts with up to `n` values, where `n` is the number of bins and **must be less or equal to 256**."
     }

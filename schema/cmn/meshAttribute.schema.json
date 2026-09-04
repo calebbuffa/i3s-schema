@@ -6,6 +6,8 @@
   "properties": {
     "resource": {
       "type": "integer",
+      "minimum": 0,
+      "maximum": 4294967295,
       "description": "The resource identifier to be used to locate attribute resources of this mesh. i.e. `layers/0/nodes//attributes/...`"
     }
   },

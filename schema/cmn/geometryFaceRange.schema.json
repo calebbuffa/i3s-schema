@@ -13,6 +13,8 @@
     },
     "component": {
       "type": "integer",
+      "minimum": 0,
+      "maximum": 4294967295,
       "description": "Pair of indices marking first and last triangles for a feature."
     },
     "encoding": {
