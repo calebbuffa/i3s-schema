@@ -9,7 +9,9 @@
       "description": "Type of the attribute values after decompression, if applicable. Please note that `string` is not supported for point cloud scene layer attributes."
     },
     "count": {
-      "type": "number",
+      "type": "integer",
+      "minimum": 0,
+      "maximum": 4294967295,
       "description": "Count the number of values. May exceed 32 bit."
     }
   },

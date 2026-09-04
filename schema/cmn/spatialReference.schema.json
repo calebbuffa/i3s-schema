@@ -6,18 +6,26 @@
   "properties": {
     "latestVcsWkid": {
       "type": "integer",
+      "minimum": 0,
+      "maximum": 4294967295,
       "description": "The current WKID value of the vertical coordinate system."
     },
     "latestWkid": {
       "type": "integer",
+      "minimum": 0,
+      "maximum": 4294967295,
       "description": "Identifies the current WKID value associated with the same spatial reference. For example a WKID of '102100' (Web Mercator) has a latestWKid of '3857'."
     },
     "vcsWkid": {
       "type": "integer",
+      "minimum": 0,
+      "maximum": 4294967295,
       "description": "The WKID value of the vertical coordinate system."
     },
     "wkid": {
       "type": "integer",
+      "minimum": 0,
+      "maximum": 4294967295,
       "description": "WKID, or Well-Known ID, of the CRS. Specify either WKID or WKT of the CRS."
     },
     "wkt": {

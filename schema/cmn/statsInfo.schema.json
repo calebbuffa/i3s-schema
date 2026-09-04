@@ -5,7 +5,9 @@
   "type": "object",
   "properties": {
     "totalValuesCount": {
-      "type": "number",
+      "type": "integer",
+      "minimum": 0,
+      "maximum": 4294967295,
       "description": "Represents the count of the value."
     },
     "min": {
@@ -25,7 +27,9 @@
       "description": "Maximum time string represented according to [time encoding](value.cmn.md). Only used for esriFieldTypeDate i3s version 1.9 or newer."
     },
     "count": {
-      "type": "number",
+      "type": "integer",
+      "minimum": 0,
+      "maximum": 4294967295,
       "description": "Count for the entire layer."
     },
     "sum": {

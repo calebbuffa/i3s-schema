@@ -90,6 +90,29 @@ pub fn type_schema(
         let mut schema = type_desc_schema(&prop.type_desc, &entry.profile, canonical);
         let obj = schema.as_object_mut().unwrap();
 
+        // A recovered numeric domain both sharpens the JSON type and records
+        // the bounds, so consumers can pick an exact machine representation.
+        if let Some(domain) = prop.numeric_domain {
+            let maximum = match domain {
+                crate::parse::NumericDomain::NonNegative => u32::MAX as u64,
+                crate::parse::NumericDomain::NonNegative64 => u64::MAX,
+            };
+            let is_array = obj.get("type").and_then(Value::as_str) == Some("array");
+            // For arrays the domain describes each element, matching how the
+            // enum handling above targets `items`.
+            let target = if is_array {
+                obj.entry("items")
+                    .or_insert_with(|| Value::Object(Map::new()))
+                    .as_object_mut()
+                    .unwrap()
+            } else {
+                &mut *obj
+            };
+            target.insert("type".into(), Value::String("integer".into()));
+            target.insert("minimum".into(), Value::Number(0.into()));
+            target.insert("maximum".into(), Value::Number(maximum.into()));
+        }
+
         // Enumerations constrain array *elements*.
         if let Some(enum_values) = &prop.enum_values {
             let enum_val = Value::Array(enum_values.iter().cloned().map(Value::String).collect());

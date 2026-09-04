@@ -6,10 +6,14 @@
   "properties": {
     "nodeVersion": {
       "type": "integer",
+      "minimum": 0,
+      "maximum": 4294967295,
       "description": "The version of the individual nodes format."
     },
     "nodesPerPage": {
       "type": "integer",
+      "minimum": 0,
+      "maximum": 4294967295,
       "description": "The page size describes the number of nodes per paged index document. 64 is currently expected."
     },
     "boundingVolumeType": {

@@ -9,7 +9,9 @@
       "description": "A unique ID for each image. Generated using the BuildID function."
     },
     "size": {
-      "type": "number",
+      "type": "integer",
+      "minimum": 0,
+      "maximum": 4294967295,
       "description": "width of this image, in pixels."
     },
     "pixelInWorldUnits": {
@@ -26,14 +28,18 @@
     "byteOffset": {
       "type": "array",
       "items": {
-        "type": "number"
+        "type": "integer",
+        "minimum": 0,
+        "maximum": 4294967295
       },
       "description": "The byte offset of this image's encodings. There is one per encoding, in the same order as the encodings, in the block in which this texture image resides."
     },
     "length": {
       "type": "array",
       "items": {
-        "type": "number"
+        "type": "integer",
+        "minimum": 0,
+        "maximum": 4294967295
       },
       "description": "The length in bytes of this image's encodings. There is one per encoding, in the same order as the encodings."
     }

@@ -26,7 +26,9 @@
       "description": "Version (store update session ID) of the referenced node."
     },
     "featureCount": {
-      "type": "number",
+      "type": "integer",
+      "minimum": 0,
+      "maximum": 4294967295,
       "description": "Number of features in the referenced node and its descendants, down to the leaf nodes."
     },
     "obb": {

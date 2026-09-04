@@ -6,6 +6,8 @@
   "properties": {
     "offset": {
       "type": "integer",
+      "minimum": 0,
+      "maximum": 4294967295,
       "description": "The number of bytes to skip from the beginning of the binary buffer. Useful to describe 'legacy' buffer that have a header. Default=`0`."
     },
     "position": {

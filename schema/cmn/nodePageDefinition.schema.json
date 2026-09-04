@@ -6,10 +6,14 @@
   "properties": {
     "nodesPerPage": {
       "type": "integer",
+      "minimum": 0,
+      "maximum": 4294967295,
       "description": "Number of nodes per page for this layer. **Must be a power-of-two** less than `4096`"
     },
     "rootIndex": {
       "type": "integer",
+      "minimum": 0,
+      "maximum": 4294967295,
       "description": "Index of the root node. Default = 0."
     },
     "lodSelectionMetricType": {

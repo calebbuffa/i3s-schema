@@ -13,24 +13,32 @@
       "description": "URL - I3S Pointer reference to the material definition in this node's shared resource, from its root element. If present, used for the entire geometry."
     },
     "id": {
-      "type": "number",
+      "type": "integer",
+      "minimum": 0,
+      "maximum": 4294967295,
       "description": "The ID of the component, only unique within the Geometry."
     },
     "materialID": {
-      "type": "number",
+      "type": "integer",
+      "minimum": 0,
+      "maximum": 4294967295,
       "description": "UUID of the material, as defined in the shared resources bundle, to use for rendering this component."
     },
     "textureID": {
       "type": "array",
       "items": {
-        "type": "number"
+        "type": "integer",
+        "minimum": 0,
+        "maximum": 4294967295
       },
       "description": "Optional ID of the texture, as defined in shared resources, to use with the material to render this component."
     },
     "regionID": {
       "type": "array",
       "items": {
-        "type": "number"
+        "type": "integer",
+        "minimum": 0,
+        "maximum": 4294967295
       },
       "description": "Optional ID of a texture atlas region which to use with the texture to render this component."
     }

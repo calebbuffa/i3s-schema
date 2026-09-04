@@ -9,7 +9,9 @@
       "description": "The mode of the elevation. Point cloud scene layer supports absoluteHeight."
     },
     "offset": {
-      "type": "number",
+      "type": "integer",
+      "minimum": 0,
+      "maximum": 4294967295,
       "description": "The offset the point cloud scene layer. The elevation unit is the coordinate systems units."
     }
   },

@@ -6,18 +6,26 @@
   "properties": {
     "definition": {
       "type": "integer",
+      "minimum": 0,
+      "maximum": 4294967295,
       "description": "The index in [layer.geometryDefinitions](geometryDefinition.cmn.md) array"
     },
     "resource": {
       "type": "integer",
+      "minimum": 0,
+      "maximum": 4294967295,
       "description": "The resource locator to be used to query geometry resources: `layers/0/nodes/{this.resource}/geometries/{layer.geometryDefinitions[this.definition].geometryBuffers[0 or 1]}`."
     },
     "vertexCount": {
       "type": "integer",
+      "minimum": 0,
+      "maximum": 4294967295,
       "description": "Number of vertices in the geometry buffer of this mesh for the **umcompressed mesh buffer**. Please note that `Draco` compressed meshes may have less vertices due to de-duplication (actual number of vertices is part of the Draco binary blob). Default=`0`"
     },
     "featureCount": {
       "type": "integer",
+      "minimum": 0,
+      "maximum": 4294967295,
       "description": "Number of features for this mesh. Default=`0`. (Must omit or set to `0` if mesh doesn't use `features`.)"
     }
   },

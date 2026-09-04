@@ -6,10 +6,14 @@
   "properties": {
     "textureSetDefinitionId": {
       "type": "integer",
+      "minimum": 0,
+      "maximum": 4294967295,
       "description": "The index in [layer.textureSetDefinitions](3DSceneLayer.cmn.md)."
     },
     "texCoord": {
       "type": "integer",
+      "minimum": 0,
+      "maximum": 4294967295,
       "description": "The set index of texture's TEXCOORD attribute used for texture coordinate mapping. Default is 0. Deprecated.",
       "deprecated": true
     },

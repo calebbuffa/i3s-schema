@@ -5,6 +5,8 @@
   "properties": {
     "id": {
       "type": "integer",
+      "minimum": 0,
+      "maximum": 4294967295,
       "description": "A unique identifying number for the layer. For point cloud scene layer, only a single layer is supported, therefore, id is always 0."
     },
     "layerType": {

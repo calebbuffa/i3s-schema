@@ -5,7 +5,9 @@
   "type": "object",
   "properties": {
     "id": {
-      "type": "number",
+      "type": "integer",
+      "minimum": 0,
+      "maximum": 4294967295,
       "description": "Feature ID, unique within the Node. If lodType is FeatureTree, the ID must be unique in the store."
     },
     "position": {
@@ -18,7 +20,9 @@
     "pivotOffset": {
       "type": "array",
       "items": {
-        "type": "number"
+        "type": "integer",
+        "minimum": 0,
+        "maximum": 4294967295
       },
       "minItems": 3,
       "maxItems": 3,

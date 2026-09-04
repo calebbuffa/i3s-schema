@@ -6,18 +6,26 @@
   "properties": {
     "resourceId": {
       "type": "integer",
+      "minimum": 0,
+      "maximum": 4294967295,
       "description": "Index of the first child of this node. The resourceID must be used to query node resources, like geometry buffer (XYZ) /nodes//geometry/0 and attribute buffers. One buffer can have one attribute. Available attributes are declared in the SceneLayer document. /nodes//attributes/."
     },
     "firstChild": {
       "type": "integer",
+      "minimum": 0,
+      "maximum": 4294967295,
       "description": "Index of the first child of this node."
     },
     "childCount": {
       "type": "integer",
+      "minimum": 0,
+      "maximum": 4294967295,
       "description": "Number of children for this node. Value is 0 if node is a leaf node."
     },
     "vertexCount": {
       "type": "integer",
+      "minimum": 0,
+      "maximum": 4294967295,
       "description": "Number of points for this node."
     },
     "obb": {

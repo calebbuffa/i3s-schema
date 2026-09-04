@@ -62,6 +62,24 @@ pub struct Property {
     pub enum_values: Option<Vec<String>>,
     #[serde(skip_serializing_if = "std::ops::Not::not")]
     pub deprecated: bool,
+    /// Narrowing inferred for numeric properties the spec describes loosely.
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub numeric_domain: Option<NumericDomain>,
+}
+
+/// The value domain of a numeric property, recovered from the spec's prose.
+///
+/// The markdown types counts, indices and identifiers as `number` or bare
+/// `integer` even though every one of them is a non-negative whole number.
+/// Recording the domain lets the JSON Schema carry `"type": "integer"` and a
+/// `minimum`, which is what downstream code generators need in order to choose
+/// an unsigned, correctly sized Rust type instead of falling back to `f64`.
+#[derive(Debug, Clone, Copy, PartialEq, Eq, Serialize)]
+pub enum NumericDomain {
+    /// A whole number that cannot be negative, and fits in 32 bits.
+    NonNegative,
+    /// A whole number that cannot be negative and may exceed 32 bits.
+    NonNegative64,
 }
 
 #[derive(Debug, Serialize)]
@@ -241,6 +259,117 @@ fn strip_html_tags(s: &str) -> String {
     HTML_RE.replace_all(s, "").trim().to_string()
 }
 
+/// Infers the value domain of a numeric property from its name and prose.
+///
+/// The I3S markdown has no machine-readable numeric constraints, but it is
+/// highly consistent in its naming: counts, indices, identifiers, sizes and
+/// byte offsets are all non-negative whole numbers. Recognising that lets the
+/// emitted schema say so explicitly.
+///
+/// Returns `None` for genuinely continuous quantities (thresholds, distances,
+/// coordinates) and for anything the spec describes as possibly negative.
+fn infer_numeric_domain(
+    name: &str,
+    type_desc: &TypeDesc,
+    description: &str,
+) -> Option<NumericDomain> {
+    // Arrays of numbers are constrained element-wise, so an array of counts is
+    // just as narrowable as a scalar count.
+    let type_name = match type_desc {
+        TypeDesc::Primitive { type_name } => type_name.as_str(),
+        TypeDesc::Array { element } => match element.as_ref() {
+            TypeDesc::Primitive { type_name } => type_name.as_str(),
+            _ => return None,
+        },
+        TypeDesc::FixedArray { element_type, .. } => element_type.as_str(),
+        _ => return None,
+    };
+    if !matches!(type_name, "integer" | "number") {
+        return None;
+    }
+    // Prose that explicitly admits negative values overrides the naming
+    // convention: `parentIndex` is documented as -1 for the root node.
+    let lower_desc = description.to_ascii_lowercase();
+    if lower_desc.contains("-1") || lower_desc.contains("negative") {
+        return None;
+    }
+
+    let snake = name
+        .chars()
+        .flat_map(|c| {
+            if c.is_ascii_uppercase() {
+                vec!['_', c.to_ascii_lowercase()]
+            } else {
+                vec![c]
+            }
+        })
+        .collect::<String>();
+    let words: Vec<&str> = snake.split('_').filter(|w| !w.is_empty()).collect();
+    let is_counting = words.iter().any(|word| {
+        matches!(
+            *word,
+            "count"
+                | "index"
+                | "id"
+                | "size"
+                | "offset"
+                | "number"
+                | "num"
+                | "version"
+                | "wkid"
+                | "resource"
+                | "definition"
+                | "component"
+                | "components"
+                | "level"
+                | "bit"
+                | "page"
+                | "pages"
+                | "child"
+                | "children"
+                | "texel"
+                | "vertices"
+                | "features"
+                | "points"
+                | "length"
+                | "capacity"
+                | "coord"
+                | "counts"
+                | "range"
+                | "elements"
+                | "ids"
+                | "layers"
+                | "values"
+        )
+    }) || name.ends_with("Id")
+        || name.ends_with("ID")
+        || name.ends_with("Ids")
+        || name.ends_with("IDs")
+        || name == "id";
+
+    // Prose fallback: the spec routinely opens a description with "Number of
+    // …" or "Count of …" for quantities whose names carry no such hint.
+    let counted_by_prose = lower_desc.starts_with("number of")
+        || lower_desc.starts_with("count of")
+        || lower_desc.starts_with("total number of")
+        || lower_desc.starts_with("the number of")
+        || lower_desc.starts_with("estimated number of")
+        || lower_desc.contains("count of elements")
+        || lower_desc.contains("inclusive indices")
+        || lower_desc.contains("binned value counts")
+        || lower_desc.contains("list of sublayers");
+
+    if !is_counting && !counted_by_prose {
+        return None;
+    }
+
+    if lower_desc.contains("exceed 32 bits") || lower_desc.contains("64 bit") {
+        Some(NumericDomain::NonNegative64)
+    } else {
+        Some(NumericDomain::NonNegative)
+    }
+}
+
 fn parse_properties_table(
     content: &str,
     source_file: &str,
@@ -314,6 +443,7 @@ fn parse_properties_table(
         }
         let enum_values = extract_enum_values(desc_cell);
         let clean_desc = strip_html_tags(desc_cell);
+        let numeric_domain = infer_numeric_domain(name, &type_desc, &clean_desc);
 
         props.push(Property {
             name: name.to_string(),
@@ -322,6 +452,7 @@ fn parse_properties_table(
             description: clean_desc,
             enum_values,
             deprecated: is_deprecated(desc_cell),
+            numeric_domain,
         });
     }
 
@@ -586,5 +717,126 @@ mod tests {
     #[test]
     fn single_member_brace_set_is_not_an_enum() {
         assert_eq!(extract_enum_values("a value from {only}."), None);
+    }
+}
+
+#[cfg(test)]
+mod numeric_tests {
+    use super::{NumericDomain, TypeDesc, infer_numeric_domain};
+
+    fn primitive(name: &str) -> TypeDesc {
+        TypeDesc::Primitive {
+            type_name: name.to_string(),
+        }
+    }
+
+    #[test]
+    fn counts_and_ids_become_non_negative_integers() {
+        // The spec types these as `number` even though they are whole counts.
+        for name in [
+            "nodeCount",
+            "featureCount",
+            "id",
+            "materialID",
+            "byteOffset",
+        ] {
+            assert_eq!(
+                infer_numeric_domain(name, &primitive("number"), "Total number of nodes."),
+                Some(NumericDomain::NonNegative),
+                "{name}"
+            );
+        }
+    }
+
+    #[test]
+    fn prose_promoting_past_32_bits_widens_the_domain() {
+        assert_eq!(
+            infer_numeric_domain(
+                "count",
+                &primitive("number"),
+                "Count of the number of values. May exceed 32 bits."
+            ),
+            Some(NumericDomain::NonNegative64)
+        );
+    }
+
+    #[test]
+    fn sentinel_negative_values_defeat_the_naming_convention() {
+        // `parentIndex` is -1 at the root, so it must stay signed.
+        assert_eq!(
+            infer_numeric_domain(
+                "parentIndex",
+                &primitive("integer"),
+                "The index of the parent node, or -1 for the root."
+            ),
+            None
+        );
+    }
+
+    #[test]
+    fn continuous_quantities_are_left_alone() {
+        for name in ["lodThreshold", "radius", "elevation"] {
+            assert_eq!(
+                infer_numeric_domain(name, &primitive("number"), "When to switch LoD."),
+                None,
+                "{name}"
+            );
+        }
+    }
+
+    #[test]
+    fn non_numeric_properties_are_ignored() {
+        assert_eq!(
+            infer_numeric_domain("id", &primitive("string"), "Identifier."),
+            None
+        );
+    }
+
+    #[test]
+    fn resource_and_definition_locators_are_non_negative() {
+        for name in [
+            "resource",
+            "definition",
+            "nodesPerPage",
+            "component",
+            "level",
+        ] {
+            assert_eq!(
+                infer_numeric_domain(name, &primitive("integer"), "The index into an array."),
+                Some(NumericDomain::NonNegative),
+                "{name}"
+            );
+        }
+    }
+
+    #[test]
+    fn counting_prose_rescues_names_without_a_hint() {
+        assert_eq!(
+            infer_numeric_domain(
+                "valuesPerElement",
+                &primitive("number"),
+                "Number of values per element."
+            ),
+            Some(NumericDomain::NonNegative)
+        );
+    }
+
+    #[test]
+    fn arrays_narrow_through_their_element_type() {
+        let array = TypeDesc::Array {
+            element: Box::new(primitive("integer")),
+        };
+        assert_eq!(
+            infer_numeric_domain("children", &array, "index of the children nodes indices."),
+            Some(NumericDomain::NonNegative)
+        );
+        let fixed = TypeDesc::FixedArray {
+            element_type: "number".to_string(),
+            size: 4,
+        };
+        assert_eq!(
+            infer_numeric_domain("regionID", &fixed, "Optional ID of a texture atlas region."),
+            Some(NumericDomain::NonNegative)
+        );
     }
 }

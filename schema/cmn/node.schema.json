@@ -6,10 +6,14 @@
   "properties": {
     "index": {
       "type": "integer",
+      "minimum": 0,
+      "maximum": 4294967295,
       "description": "The index in the node array. May be **different than** material, geometry and attribute `resource` id. See [`mesh`](mesh.cmn.md) for more information."
     },
     "parentIndex": {
       "type": "integer",
+      "minimum": 0,
+      "maximum": 4294967295,
       "description": "The index of the parent node in the node array."
     },
     "lodThreshold": {
@@ -23,7 +27,9 @@
     "children": {
       "type": "array",
       "items": {
-        "type": "integer"
+        "type": "integer",
+        "minimum": 0,
+        "maximum": 4294967295
       },
       "description": "index of the children nodes indices."
     },

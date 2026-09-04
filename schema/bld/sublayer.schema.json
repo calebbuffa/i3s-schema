@@ -6,6 +6,8 @@
   "properties": {
     "id": {
       "type": "integer",
+      "minimum": 0,
+      "maximum": 4294967295,
       "description": "Identifier for this sublayer. **If** `layerType != 'group'`, resources will be at `/layers/{bim_layer_id}/sublayers/{this.id}/...`"
     },
     "name": {
