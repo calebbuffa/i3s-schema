@@ -20,9 +20,6 @@
         "3DObject",
         "IntegratedMesh"
       ],
-      "x-rust-variant-names": {
-        "3DObject": "ThreeDObject"
-      },
       "description": "The user-visible layer typePossible values are: `3DObject`IntegratedMesh`"
     },
     "spatialReference": {

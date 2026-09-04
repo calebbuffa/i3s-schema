@@ -41,9 +41,6 @@
         "3DObject",
         "Point"
       ],
-      "x-rust-variant-names": {
-        "3DObject": "ThreeDObject"
-      },
       "description": "Possible values are: `group`3DObject`Point`"
     },
     "visibility": {
