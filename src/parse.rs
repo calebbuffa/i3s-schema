@@ -345,10 +345,10 @@ fn infer_numeric_domain(
                     | "children"
                     | "texel"
                     | "vertices"
-                | "features"
-                | "points"
-                | "length"
-                | "capacity"
+                    | "features"
+                    | "points"
+                    | "length"
+                    | "capacity"
                     | "coord"
                     | "counts"
                     | "elements"
@@ -385,6 +385,114 @@ fn infer_numeric_domain(
     } else {
         Some(NumericDomain::NonNegative)
     }
+}
+
+/// Corrections applied to properties the specification states incorrectly.
+///
+/// The markdown is the source of truth wherever it is self-consistent, and
+/// this table is deliberately tiny: an entry earns its place only when the
+/// spec contradicts *itself* and published services agree with the other
+/// half of the contradiction. Each entry names the evidence.
+///
+/// Keyed by `(source file, property name)`.
+const ERRATA: &[Erratum] = &[
+    Erratum {
+        source_file: "3DSceneLayer.psl.md",
+        property: "geometryDefinition",
+        rename_to: Some("geometryDefinitions"),
+        into_array: true,
+        force_optional: true,
+        // The psl property table calls this a single `geometryDefinition`, but
+        // the same version's `Point_ReadMe.md` says "The available geometry
+        // formats are specified in geometryDefinitions on the layer document",
+        // and every published Point service emits a plural array -- e.g.
+        // basemaps3d.arcgis.com/.../OpenStreetMap3D_Trees_Thematic_v1, whose
+        // layer document contains `"geometryDefinitions" : [{...}]`. Reading
+        // the singular name fails on all real data, so the table is the error.
+        //
+        // It is optional for the same reason as its `cmn` counterpart: 1.6
+        // Point layers predate geometry definitions and omit the property.
+        reason: "Point_ReadMe and all published Point services use the plural array form",
+    },
+    Erratum {
+        source_file: "3DSceneLayer.cmn.md",
+        property: "geometryDefinitions",
+        rename_to: None,
+        into_array: false,
+        force_optional: true,
+        // Bindings are generated once, from the newest specification, but they
+        // are used to read every version a service might publish. Before 1.7
+        // there were no geometry definitions at all: geometry layout was fixed
+        // by the store, so the property does not appear. The 1.7 table lists it
+        // as optional and 1.8 promoted it to required, which is accurate for
+        // documents a *1.8 producer* writes but not for the 1.6 documents still
+        // served today -- e.g. the sublayers of the Turanga Library building
+        // layer on tiles.arcgis.com, which omit it entirely. Requiring it here
+        // would reject valid, currently published data.
+        reason: "1.6 layers predate geometry definitions and are still served",
+    },
+];
+
+/// One correction to a property the specification states incorrectly.
+struct Erratum {
+    source_file: &'static str,
+    property: &'static str,
+    /// The name real data uses, when the spec's name is wrong.
+    rename_to: Option<&'static str>,
+    /// Whether real data wraps the declared type in an array.
+    into_array: bool,
+    /// Whether real data omits a property the spec marks required.
+    force_optional: bool,
+    /// Why this correction is justified. Not used at runtime; it exists so
+    /// that an entry cannot be added without stating its evidence.
+    #[allow(dead_code)]
+    reason: &'static str,
+}
+
+/// Applies any [`ERRATA`] entry for this property, reporting what it changed.
+fn apply_errata(source_file: &str, property: &mut Property, warnings: &mut Vec<String>) {
+    // The spec ships one directory per version, so match on the file name
+    // alone rather than on the versioned path.
+    let file = source_file
+        .rsplit(['/', '\\'])
+        .next()
+        .unwrap_or(source_file);
+    let Some(erratum) = ERRATA
+        .iter()
+        .find(|e| e.source_file == file && e.property == property.name)
+    else {
+        return;
+    };
+
+    if let Some(name) = erratum.rename_to {
+        property.name = name.to_string();
+    }
+    if erratum.into_array && !matches!(property.type_desc, TypeDesc::Array { .. }) {
+        let element = std::mem::replace(&mut property.type_desc, TypeDesc::Unknown);
+        property.type_desc = TypeDesc::Array {
+            element: Box::new(element),
+        };
+    }
+    if erratum.force_optional {
+        property.required = false;
+    }
+
+    let mut changes = Vec::new();
+    if erratum.rename_to.is_some() {
+        changes.push(format!("renamed to {:?}", property.name));
+    }
+    if erratum.into_array {
+        changes.push("wrapped in an array".to_string());
+    }
+    if erratum.force_optional {
+        changes.push("made optional".to_string());
+    }
+    warnings.push(format!(
+        "errata: {file}: {:?} {}: {}",
+        erratum.property,
+        changes.join(", "),
+        erratum.reason,
+    ));
 }
 
 fn parse_properties_table(
@@ -471,6 +579,11 @@ fn parse_properties_table(
             deprecated: is_deprecated(desc_cell),
             numeric_domain,
         });
+        apply_errata(
+            source_file,
+            props.last_mut().expect("just pushed"),
+            warnings,
+        );
     }
 
     props
@@ -682,6 +795,98 @@ pub fn parse_spec(spec_dir: &Path) -> Result<(Ir, VersionIndex, Vec<String>)> {
 #[cfg(test)]
 mod tests {
     use super::extract_enum_values;
+
+    #[test]
+    fn errata_pluralize_the_point_geometry_definition() {
+        use super::{Property, TypeDesc, apply_errata};
+
+        let mut property = Property {
+            name: "geometryDefinition".to_string(),
+            type_desc: TypeDesc::Reference {
+                name: "geometryDefinition".to_string(),
+                base_name: "geometrydefinition".to_string(),
+                profile: "psl".to_string(),
+            },
+            required: true,
+            description: String::new(),
+            enum_values: None,
+            deprecated: false,
+            numeric_domain: None,
+        };
+        let mut warnings = Vec::new();
+        apply_errata(
+            "docs/1.10/3DSceneLayer.psl.md",
+            &mut property,
+            &mut warnings,
+        );
+
+        assert_eq!(property.name, "geometryDefinitions");
+        assert!(matches!(property.type_desc, TypeDesc::Array { .. }));
+        assert!(!property.required);
+        // A correction must always be reported, never applied silently.
+        assert_eq!(warnings.len(), 1);
+    }
+
+    #[test]
+    fn errata_relax_the_mesh_geometry_definitions_requirement() {
+        use super::{Property, TypeDesc, apply_errata};
+
+        let mut property = Property {
+            name: "geometryDefinitions".to_string(),
+            type_desc: TypeDesc::Array {
+                element: Box::new(TypeDesc::Reference {
+                    name: "geometryDefinition".to_string(),
+                    base_name: "geometrydefinition".to_string(),
+                    profile: "cmn".to_string(),
+                }),
+            },
+            required: true,
+            description: String::new(),
+            enum_values: None,
+            deprecated: false,
+            numeric_domain: None,
+        };
+        let mut warnings = Vec::new();
+        apply_errata(
+            "docs/1.10/3DSceneLayer.cmn.md",
+            &mut property,
+            &mut warnings,
+        );
+
+        // The name and shape are right; only the requirement is wrong, because
+        // 1.6 layers omit the property and are still published.
+        assert_eq!(property.name, "geometryDefinitions");
+        assert!(matches!(property.type_desc, TypeDesc::Array { .. }));
+        assert!(!property.required);
+        assert_eq!(warnings.len(), 1);
+    }
+
+    #[test]
+    fn errata_leave_other_properties_alone() {
+        use super::{Property, TypeDesc, apply_errata};
+
+        let mut property = Property {
+            name: "geometryDefinitions".to_string(),
+            type_desc: TypeDesc::Primitive {
+                type_name: "string".to_string(),
+            },
+            required: true,
+            description: String::new(),
+            enum_values: None,
+            deprecated: false,
+            numeric_domain: None,
+        };
+        let mut warnings = Vec::new();
+        // Same property name, a document with no erratum: nothing applies.
+        apply_errata(
+            "docs/1.10/3DSceneLayer.bld.md",
+            &mut property,
+            &mut warnings,
+        );
+
+        assert!(matches!(property.type_desc, TypeDesc::Primitive { .. }));
+        assert!(warnings.is_empty());
+    }
 
     #[test]
     fn li_backtick_lists_take_precedence() {

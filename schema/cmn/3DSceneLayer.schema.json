@@ -159,8 +159,7 @@
     "layerType",
     "version",
     "capabilities",
-    "store",
-    "geometryDefinitions"
+    "store"
   ],
   "x-i3s-versions": [
     "1.10",

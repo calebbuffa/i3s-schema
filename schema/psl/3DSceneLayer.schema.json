@@ -119,8 +119,11 @@
       "$ref": "../cmn/nodePageDefinition.schema.json",
       "description": "The paged-access index description. For legacy purposes, this property is called pointNodePages in [Point Scene Layers](3DSceneLayer.psl.md)."
     },
-    "geometryDefinition": {
-      "$ref": "geometryDefinition.schema.json",
+    "geometryDefinitions": {
+      "type": "array",
+      "items": {
+        "$ref": "geometryDefinition.schema.json"
+      },
       "description": "Define the layouts of point geometry and its attributes."
     },
     "fullExtent": {
@@ -141,8 +144,7 @@
     "layerType",
     "version",
     "capabilities",
-    "store",
-    "geometryDefinition"
+    "store"
   ],
   "x-i3s-versions": [
     "1.10",
